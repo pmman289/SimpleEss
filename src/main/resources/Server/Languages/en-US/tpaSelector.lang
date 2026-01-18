@@ -1,0 +1,4 @@
+title = Choose target player
+cancel = Cancel
+worldName = World: {worldName}
+requestCd = CD：{requestCd}s

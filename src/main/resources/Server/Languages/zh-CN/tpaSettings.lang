@@ -1,0 +1,5 @@
+title = 传送设置
+backButton = 返回
+enableAutoAccept = 自动接受传送请求
+enableAutoDeny = 自动拒绝传送请求
+enableDisableTpa = 停用传送请求(这会使得所有人都无法向你发起传送请求)

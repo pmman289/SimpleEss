@@ -1,0 +1,20 @@
+{
+  "Group": "tech.pmman",
+  "Name": "SimpleEss",
+  "Version": "1.0.0",
+  "Description": "A simple plugin to provide some utility command",
+  "Authors": [
+    {
+      "Name": "pmman",
+      "Email": "me@pmman.tech",
+      "Url": "https://pmman.tech"
+    }
+  ],
+  "Website": "https://pmman.tech",
+  "ServerVersion": "*",
+  "Dependencies": {},
+  "OptionalDependencies": {},
+  "DisabledByDefault": false,
+  "IncludesAssetPack": true,
+  "Main": "tech.pmman.SimpleEssPlugin"
+}

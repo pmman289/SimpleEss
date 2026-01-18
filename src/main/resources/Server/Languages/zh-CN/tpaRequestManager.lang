@@ -1,0 +1,12 @@
+noRequest = 你还没有需要处理的传送请求
+title = 传送请求列表
+requestTime = 过期于{requestTime}秒后
+accept = 批准
+deny = 拒绝
+close = 关闭
+settingsButton = 设置
+requestCd = 你刚刚向该玩家发送过一个传送申请，在他处理前请稍等一会
+requestReceived = 你收到了一个传送请求，输入/tpatab来处理
+requestAcceptedToFrom = 你的一个传送请求已被接受，你将被传送到指定的玩家
+requestAcceptedToTarget = 你已接受一个传送请求，指定的玩家将被传送到你的位置
+requestDeniedToFrom = 你的一个传送请求已被拒绝

@@ -1,0 +1,4 @@
+title = 选择目标玩家
+cancel = 取消
+worldName = 所在世界: {worldName}
+requestCd = 冷却时间: {requestCd}s

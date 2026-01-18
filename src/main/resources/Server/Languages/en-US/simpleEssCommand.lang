@@ -1,0 +1,22 @@
+sethome.desc = Set your current location as home
+sethome.execute = Your home has been set to your current location.
+
+home.desc = Teleport to your home
+home.execute = You have been teleported to your home.
+home.nohome = You haven't set a home yet.
+
+setworldspawn.desc = Set the world spawn point to your current location
+setworldspawn.execute = The world spawn point has been set to x:{x} y:{y} z:{z}
+
+back.desc = Return to your previous teleport location
+back.execute = No previous teleport location found.
+
+backdeath.desc = Return to your last death location
+backdeath.nodeath = You haven't died yet. Lucky you!
+
+tpa.desc = Send a teleport request to a specific player
+tpatab.desc = Open your teleport request manager
+
+msg.desc = Send a private message to a specific player
+msg.execute = whispers to you
+msg.cannotSendSelf = You cannot send private messages to yourself.

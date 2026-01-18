@@ -1,0 +1,4 @@
+title = Tpa Request
+content = {player} trying to teleport to you
+accept = Accept
+deny = Deny

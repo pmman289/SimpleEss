@@ -1,0 +1,23 @@
+sethome.desc = 将你所在的位置设为家
+sethome.execute = 你的家已被设置在你当前所在位置
+
+home.desc = 将你传送到设置的家
+home.execute = 已将你传送到家
+home.nohome = 你还未设置家
+
+setworldspawn.desc = 将世界重生点设定在你所在的位置
+setworldspawn.execute = 当前世界重生点已被设置在 x:{x} y:{y} z:{z}
+
+back.desc = 回到上一个传送地点
+back.execute = 没有上一个传送地点
+
+backdeath.desc = 回到上一个死亡地点
+backdeath.nodeath = 你还没有死过，真幸运
+
+tpa.desc = 向指定玩家发出传送请求
+
+tpatab.desc = 打开你的传送请求管理器
+
+msg.desc = 向指定玩家发出私密消息
+msg.execute = 悄悄向你说
+msg.cannotSendSelf = 你不能向自己发送私密消息

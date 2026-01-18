@@ -1,0 +1,12 @@
+noRequest = You have no pending teleport requests.
+title = Teleport Request List
+requestTime = Expires in {requestTime} seconds
+accept = Accept
+deny = Deny
+close = Close
+settingsButton = Settings
+requestCd = You have already sent a request to this player. Please wait until they respond.
+requestReceived = You have received a teleport request. Type /tpatab to manage it.
+requestAcceptedToFrom = Your teleport request has been accepted. You will be teleported now.
+requestAcceptedToTarget = You have accepted the request. The player will be teleported to you.
+requestDeniedToFrom = Your teleport request was denied.

@@ -1,0 +1,5 @@
+title = Teleport Settings
+backButton = Back
+enableAutoAccept = Auto-Accept Teleport Requests
+enableAutoDeny = Auto-Deny Teleport Requests
+enableDisableTpa = Disable Teleport Requests (This prevents anyone from sending you requests)

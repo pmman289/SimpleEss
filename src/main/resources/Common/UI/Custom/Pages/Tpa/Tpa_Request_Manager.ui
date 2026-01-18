@@ -1,0 +1,56 @@
+$C = "../../Common.ui";
+
+$C.@PageOverlay {
+  $C.@Container {
+    Anchor: (Width: 450, Height: 500);
+
+    #Title {
+      Group {
+        $C.@Title {
+          @Text = %tpaRequestManager.title;
+        }
+
+        TextButton #SettingsButton {
+          Anchor: (Right: 12, Top: 4, Width: 64, Height: 24);
+          Padding: (Top: 2);
+          Text: %tpaRequestManager.settingsButton;
+          Style: TextButtonStyle(
+            Default: (LabelStyle: (FontSize: 14, TextColor: #93844c, RenderBold: true, HorizontalAlignment: Center)),
+            Sounds: $C.@ButtonSounds,
+          );
+          Background: #000000(0.13);
+        }
+      }
+    }
+
+    #Content {
+      LayoutMode: Top;
+      Padding: (Full: 15);
+
+      // 滚动列表
+      Group #RequestList {
+        Anchor: (Width: 420);
+        FlexWeight: 1;
+        LayoutMode: TopScrolling;
+        ScrollbarStyle: $C.@DefaultScrollbarStyle;
+
+        Group #RequestCards {
+          LayoutMode: Top;
+        }
+      }
+
+      // 底部关闭区域
+      Group #Footer {
+        Anchor: (Horizontal: 0, Top: 15, Height: 40);
+        LayoutMode: Center;
+
+        $C.@SecondaryTextButton #CloseButton {
+          @Anchor = (Width: 150, Height: 35);
+          @Text = %tpaRequestManager.close;
+        }
+      }
+    }
+  }
+}
+
+$C.@BackButton {}

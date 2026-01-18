@@ -1,0 +1,4 @@
+title = 传送请求
+content = {player} 请求传送到你所在的位置
+accept = 接受
+deny = 拒绝
