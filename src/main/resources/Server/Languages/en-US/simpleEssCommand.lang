@@ -19,4 +19,5 @@ tpatab.desc = Open your teleport request manager
 
 msg.desc = Send a private message to a specific player
 msg.execute = whispers to you
+msg.executeMe = You whisper to
 msg.cannotSendSelf = You cannot send private messages to yourself.

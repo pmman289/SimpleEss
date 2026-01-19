@@ -4,6 +4,7 @@ import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import tech.pmman.SimpleEssPlugin;
+import tech.pmman.pojo.PlayerLocationEntry;
 import tech.pmman.pojo.TpaRequestData;
 import tech.pmman.util.CheckTool;
 import tech.pmman.util.MessageTool;
@@ -80,9 +81,18 @@ public class TpaManager {
         List<TpaRequestData> userRequestList = tpaDataMap.computeIfAbsent(target, k -> new ArrayList<>());
         userRequestList.removeIf(o -> from.equals(o.getRequestPlayer()));
         // 传送玩家
-        PlayerTool.teleportPlayerNoRotation(Objects.requireNonNull(fromPlayerRef.getReference()),
-                targetPlayerRef.getTransform());
-        PlayerTool.recordPlayerTransformHistoryNoRotation(from.toString(), targetPlayerRef.getTransform());
+        assert fromPlayerRef.getWorldUuid() != null;
+        PlayerTool.teleportPlayer(Objects.requireNonNull(fromPlayerRef.getReference()),
+                Universe.get()
+                        .getWorld(fromPlayerRef.getWorldUuid()), targetPlayerRef.getTransform()
+                                                                                .getPosition(),
+                targetPlayerRef.getTransform()
+                               .getRotation());
+        PlayerTool.recordPlayerTransformHistory(from.toString(),
+                new PlayerLocationEntry(fromPlayerRef.getWorldUuid().toString(), fromPlayerRef.getTransform()
+                                                                                   .getPosition(),
+                        fromPlayerRef.getTransform()
+                                     .getRotation()));
         // 发送通知
         MessageTool.sendPluginMessage(fromPlayerRef, Message.translation("tpaRequestManager.requestAcceptedToFrom"));
         MessageTool.sendPluginMessage(targetPlayerRef, Message.translation("tpaRequestManager.requestAcceptedToTarget"));

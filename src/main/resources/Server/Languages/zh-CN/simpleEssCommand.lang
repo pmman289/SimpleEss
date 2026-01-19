@@ -20,4 +20,5 @@ tpatab.desc = 打开你的传送请求管理器
 
 msg.desc = 向指定玩家发出私密消息
 msg.execute = 悄悄向你说
+msg.executeMe = 你悄悄说
 msg.cannotSendSelf = 你不能向自己发送私密消息

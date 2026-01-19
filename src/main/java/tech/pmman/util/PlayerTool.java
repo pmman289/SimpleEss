@@ -3,6 +3,7 @@ package tech.pmman.util;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.math.vector.Transform;
+import com.hypixel.hytale.math.vector.Vector3d;
 import com.hypixel.hytale.math.vector.Vector3f;
 import com.hypixel.hytale.server.core.entity.UUIDComponent;
 import com.hypixel.hytale.server.core.entity.entities.Player;
@@ -11,8 +12,10 @@ import com.hypixel.hytale.server.core.modules.entity.component.TransformComponen
 import com.hypixel.hytale.server.core.modules.entity.teleport.Teleport;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
+import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import tech.pmman.SimpleEssPlugin;
+import tech.pmman.pojo.PlayerLocationEntry;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -43,28 +46,22 @@ public class PlayerTool {
         return player.getUsername();
     }
 
-    /**
-     * 传送玩家到指定位置，不使用旋转参数
-     *
-     * @param playerRef       玩家引用
-     * @param targetTransform 目标位置
-     */
-    public static void teleportPlayerNoRotation(Ref<EntityStore> playerRef, Transform targetTransform) {
+    public static void teleportPlayer(Ref<EntityStore> playerRef, World world, Vector3d position, Vector3f rotation) {
         Store<EntityStore> store = playerRef.getStore();
-        store.addComponent(playerRef, Teleport.getComponentType(), new Teleport(targetTransform.getPosition(), targetTransform.getRotation()));
+        store.addComponent(playerRef, Teleport.getComponentType(), new Teleport(world, position, rotation));
     }
 
     /**
-     * 记录玩家传送记录，不记录视角参数
+     * 记录传送历史记录
      *
-     * @param playerUUID 玩家uuid
-     * @param transform  位置
+     * @param playerUUID    玩家uuid
+     * @param locationEntry location对象
      */
-    public static void recordPlayerTransformHistoryNoRotation(String playerUUID, Transform transform) {
-        // 添加传送记录，不记录视角
+    public static void recordPlayerTransformHistory(String playerUUID, PlayerLocationEntry locationEntry) {
+        // 添加传送记录
         SimpleEssPlugin.playerLastTeleportConfig.get()
                                                 .getLastTeleportData()
-                                                .put(playerUUID, transform);
+                                                .put(playerUUID, locationEntry);
     }
 
     /**

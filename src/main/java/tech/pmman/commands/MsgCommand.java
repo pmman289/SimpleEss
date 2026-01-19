@@ -46,6 +46,9 @@ public class MsgCommand extends AbstractPlayerCommand implements PermissionGroup
                        .color(Color.YELLOW),
                 msg);
         MessageTool.sendPluginMessageNoChangeColor(targetPlayerRef, resultMessage);
+        Message sendToSender = Message.join(Message.translation("simpleEssCommand.msg.executeMe")
+                                                   .color(Color.YELLOW), msg);
+        MessageTool.sendPluginMessageNoChangeColor(playerRef, sendToSender);
     }
 
     @Override
