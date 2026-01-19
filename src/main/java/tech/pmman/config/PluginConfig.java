@@ -10,6 +10,7 @@ public class PluginConfig {
     private String welcomeText = "";
     private String joinBroadcast = "";
     private int teleportCooldown = 120;
+    private int maxHome = 3;
     private String[] publicCommand = new String[]{
             "back",
             "backdeath",
@@ -44,6 +45,12 @@ public class PluginConfig {
                                 new KeyedCodec<>("TeleportCooldown", BuilderCodec.INTEGER),
                                 (o, d) -> o.teleportCooldown = d,
                                 o -> o.teleportCooldown
+                        )
+                        .add()
+                        .append(
+                                new KeyedCodec<>("MaxHome", BuilderCodec.INTEGER),
+                                (o, d) -> o.maxHome = d,
+                                o -> o.maxHome
                         )
                         .add()
                         .append(

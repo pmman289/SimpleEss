@@ -1,5 +1,6 @@
 package tech.pmman.service;
 
+import com.hypixel.hytale.math.vector.Transform;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
@@ -82,17 +83,22 @@ public class TpaManager {
         userRequestList.removeIf(o -> from.equals(o.getRequestPlayer()));
         // 传送玩家
         assert fromPlayerRef.getWorldUuid() != null;
+        Transform targetTransform = targetPlayerRef.getTransform()
+                                                   .clone();
+        Transform fromTransform = fromPlayerRef.getTransform()
+                                               .clone();
         PlayerTool.teleportPlayer(Objects.requireNonNull(fromPlayerRef.getReference()),
                 Universe.get()
-                        .getWorld(fromPlayerRef.getWorldUuid()), targetPlayerRef.getTransform()
-                                                                                .getPosition(),
-                targetPlayerRef.getTransform()
-                               .getRotation());
+                        .getWorld(fromPlayerRef.getWorldUuid()), targetTransform
+                        .getPosition(),
+                targetTransform
+                        .getRotation());
         PlayerTool.recordPlayerTransformHistory(from.toString(),
-                new PlayerLocationEntry(fromPlayerRef.getWorldUuid().toString(), fromPlayerRef.getTransform()
-                                                                                   .getPosition(),
-                        fromPlayerRef.getTransform()
-                                     .getRotation()));
+                new PlayerLocationEntry(fromPlayerRef.getWorldUuid()
+                                                     .toString(), fromTransform
+                        .getPosition(),
+                        fromTransform
+                                .getRotation()));
         // 发送通知
         MessageTool.sendPluginMessage(fromPlayerRef, Message.translation("tpaRequestManager.requestAcceptedToFrom"));
         MessageTool.sendPluginMessage(targetPlayerRef, Message.translation("tpaRequestManager.requestAcceptedToTarget"));

@@ -2,8 +2,14 @@ sethome.desc = 将你所在的位置设为家
 sethome.execute = 你的家已被设置在你当前所在位置
 
 home.desc = 将你传送到设置的家
+home.desc.argName = 家的名称
+home.desc.argNameDefault = 默认家的名称(default)
 home.execute = 已将你传送到家
-home.nohome = 你还未设置家
+home.nohome = 指定的家不存在:{homeName}
+
+sethome.desc.argName = 家的名称
+sethome.desc.argNameDefault = 默认家的名称(default)
+sethome.outOfMaxHome = 你最多只能设置{maxHome}个家
 
 setworldspawn.desc = 将世界重生点设定在你所在的位置
 setworldspawn.execute = 当前世界重生点已被设置在 x:{x} y:{y} z:{z}

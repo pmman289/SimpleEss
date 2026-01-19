@@ -17,7 +17,6 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import tech.pmman.pojo.TpaRequestData;
 import tech.pmman.service.TpaManager;
-import tech.pmman.util.MessageTool;
 import tech.pmman.util.PlayerTool;
 
 import javax.annotation.Nonnull;
@@ -39,7 +38,6 @@ public class TpaRequestManagerGui extends InteractiveCustomUIPage<TpaRequestMana
         UUID myUuid = playerRef.getUuid();
         List<TpaRequestData> requests = TpaManager.getTargetAllRequestList(myUuid);
         if (requests == null) {
-            MessageTool.sendPluginMessage(playerRef, Message.translation("tpaRequestManager.noRequest"));
             requests = Collections.emptyList();
         }
 

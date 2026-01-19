@@ -4,6 +4,8 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
+import com.hypixel.hytale.server.core.command.system.arguments.system.DefaultArg;
+import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
@@ -19,22 +21,27 @@ import java.util.Map;
 import java.util.UUID;
 
 public class HomeCommand extends AbstractPlayerCommand implements PermissionGroupSettable {
+    private final DefaultArg<String> name;
 
     public HomeCommand() {
         super("home", "simpleEssCommand.home.desc");
+        name = withDefaultArg("name", "simpleEssCommand.home.desc.argName",
+                ArgTypes.STRING, "default", "simpleEssCommand.home.desc.argNameDefault");
     }
 
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
+        String homeName = name.get(commandContext);
         String uuid = playerRef.getUuid()
                                .toString();
-        Map<String, PlayerLocationEntry> homeData = SimpleEssPlugin.playerHomeConfig.get()
-                                                                                    .getHomeData();
-        if (!homeData.containsKey(uuid)) {
-            MessageTool.sendPluginMessage(commandContext, Message.translation("simpleEssCommand.home.nohome"));
+        Map<String, PlayerLocationEntry> homeMap = SimpleEssPlugin.playerHomeConfig.get()
+                                                                                   .getHomeMap(uuid);
+        if (!homeMap.containsKey(homeName)) {
+            MessageTool.sendPluginMessage(commandContext, Message.translation("simpleEssCommand.home.nohome")
+                                                                 .param("homeName", homeName));
             return;
         }
-        PlayerLocationEntry location = homeData.get(uuid);
+        PlayerLocationEntry location = homeMap.get(homeName);
         // 判断世界是否在线
         World targetWorld = Universe.get()
                                     .getWorld(UUID.fromString(location.getWorldUUID()));

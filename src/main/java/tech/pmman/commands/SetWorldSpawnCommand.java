@@ -25,7 +25,7 @@ public class SetWorldSpawnCommand extends AbstractWorldCommand implements Permis
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull World world, @Nonnull Store<EntityStore> store) {
         Ref<EntityStore> playerRef = CheckTool.getPlayerRefByCommandContext(commandContext);
-        Transform transform = PlayerTool.getTransform(store, playerRef);
+        Transform transform = PlayerTool.getTransform(store, playerRef).clone();
         FitToHeightMapSpawnProvider spawnProvider = new FitToHeightMapSpawnProvider(new GlobalSpawnProvider(transform));
         world.getWorldConfig()
              .setSpawnProvider(spawnProvider);

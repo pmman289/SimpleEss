@@ -1,9 +1,14 @@
-sethome.desc = Set your current location as home
+sethome.desc = Set your current location as a home
 sethome.execute = Your home has been set to your current location.
+sethome.desc.argName = Home name
+sethome.desc.argNameDefault = Default home name (default)
+sethome.outOfMaxHome = You have reached the limit of {maxHome} homes.
 
-home.desc = Teleport to your home
+home.desc = Teleport to a set home
+home.desc.argName = Home name
+home.desc.argNameDefault = Default home name (default)
 home.execute = You have been teleported to your home.
-home.nohome = You haven't set a home yet.
+home.nohome = The specified home does not exist: {homeName}
 
 setworldspawn.desc = Set the world spawn point to your current location
 setworldspawn.execute = The world spawn point has been set to x:{x} y:{y} z:{z}
@@ -15,6 +20,7 @@ backdeath.desc = Return to your last death location
 backdeath.nodeath = You haven't died yet. Lucky you!
 
 tpa.desc = Send a teleport request to a specific player
+
 tpatab.desc = Open your teleport request manager
 
 msg.desc = Send a private message to a specific player
