@@ -6,7 +6,7 @@
 
     <groupId>tech.pmman</groupId>
     <artifactId>SimpleEss</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>b-0.0.1</version>
 
     <properties>
         <maven.compiler.source>25</maven.compiler.source>
