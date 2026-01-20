@@ -29,9 +29,14 @@ public class ConfigManager {
         };
     }
 
-    public static void loadAndSave() {
+    public static void load() {
         for (Config<?> config : ACTIVE_CONFIG) {
             config.load();
+        }
+    }
+
+    public static void save(){
+        for (Config<?> config : ACTIVE_CONFIG) {
             config.save();
         }
     }

@@ -1,7 +1,7 @@
 {
   "Group": "tech.pmman",
   "Name": "SimpleEss",
-  "Version": "1.0.0",
+  "Version": "0.0.2-beta",
   "Description": "A simple plugin to provide some utility command",
   "Authors": [
     {

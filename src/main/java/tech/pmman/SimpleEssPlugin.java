@@ -24,7 +24,8 @@ public class SimpleEssPlugin extends JavaPlugin {
 
     @Override
     protected void setup() {
-        ConfigManager.loadAndSave();
+        ConfigManager.load();
+        ConfigManager.save();
         TpaManager.loadConfig();
         MessageTool.loadConfig();
         // 注册命令
@@ -35,6 +36,6 @@ public class SimpleEssPlugin extends JavaPlugin {
 
     @Override
     protected void shutdown() {
-        ConfigManager.loadAndSave();
+        ConfigManager.save();
     }
 }
