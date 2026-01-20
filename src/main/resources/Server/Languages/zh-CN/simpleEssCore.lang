@@ -1,1 +1,2 @@
 teleport.targetWorldNotOnline = 传送的目标世界不在线，请联系管理员
+unknownError = 发生了预期以外的错误，请报告管理员:{errorMsg}

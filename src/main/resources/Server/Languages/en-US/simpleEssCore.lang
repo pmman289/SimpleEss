@@ -1,1 +1,2 @@
-teleport.targetWorldNotOnline = The target world is not loaded. Please contact an administrator.
+teleport.targetWorldNotOnline = The target world is currently offline. Please contact an administrator.
+unknownError = An unexpected error occurred. Please report this to an administrator: {errorMsg}

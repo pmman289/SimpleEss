@@ -1,3 +1,4 @@
+# Home System
 sethome.desc = Set your current location as a home
 sethome.execute = Your home has been set to your current location.
 sethome.desc.argName = Home name
@@ -10,6 +11,7 @@ home.desc.argNameDefault = Default home name (default)
 home.execute = You have been teleported to your home.
 home.nohome = The specified home does not exist: {homeName}
 
+# Teleportation & Spawn
 setworldspawn.desc = Set the world spawn point to your current location
 setworldspawn.execute = The world spawn point has been set to x:{x} y:{y} z:{z}
 
@@ -20,14 +22,15 @@ backdeath.desc = Return to your last death location
 backdeath.nodeath = You haven't died yet. Lucky you!
 
 tpa.desc = Send a teleport request to a specific player
-
 tpatab.desc = Open your teleport request manager
 
+# Messaging
 msg.desc = Send a private message to a specific player
 msg.execute = whispers to you
 msg.executeMe = You whisper to
 msg.cannotSendSelf = You cannot send private messages to yourself.
 
+# Admin & System
 simpleess.desc = Main command for SimpleEss
 simpleess.execute = SimpleEss-{version}\nAvailable subcommands:\nreload
 
@@ -35,7 +38,15 @@ simpleess.reload.desc = Reload SimpleEss configuration
 simpleess.reload.execute = Reloading configuration from file...
 simpleess.reload.executed = Configuration reloaded successfully.
 
+# Random Teleport
 rtp.desc = Teleport to a random location in the current world
 rtp.execute = You have been randomly teleported to x:{x} y:{y} z:{z}
 rtp.failed = Failed to find a suitable location after multiple attempts. If this persists, please contact an administrator.
 rtp.cooldown = You must wait {cooldown} seconds before using random teleport again.
+
+# Flight
+fly.desc = Enable or disable your flight mode
+fly.execute = Flight mode for {player} has been set to {mode}
+fly.others.desc = Enable or disable flight mode for a specific player
+fly.others.arg = The target player
+fly.others.argMode = true=ON false=OFF
