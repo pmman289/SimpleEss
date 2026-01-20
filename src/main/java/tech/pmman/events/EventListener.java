@@ -43,7 +43,7 @@ public class EventListener {
         UUID uuid = PlayerTool.getUUID(playerRef.getStore(), playerRef);
         PermissionsModule permissionsModule = PermissionsModule.get();
         Set<String> groups = permissionsModule.getGroupsForUser(uuid);
-        if (groups.size() < 2 && !groups.contains("Default")) {
+        if (groups.size() < 3 && !groups.contains("Default")) {
             permissionsModule.addUserToGroup(uuid, "Default");
         }
     }
