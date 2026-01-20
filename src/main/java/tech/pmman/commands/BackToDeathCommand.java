@@ -6,7 +6,6 @@ import com.hypixel.hytale.math.vector.Transform;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
-import com.hypixel.hytale.server.core.command.system.exceptions.GeneralCommandException;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.data.PlayerDeathPositionData;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -31,9 +30,6 @@ public class BackToDeathCommand extends AbstractPlayerCommand implements Permiss
 
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-        if (!commandContext.isPlayer()) {
-            throw new GeneralCommandException(Message.raw("Only players can use this command"));
-        }
         Player player = commandContext.senderAs(Player.class);
         List<PlayerDeathPositionData> deathPositions = player.getPlayerConfigData()
                                                              .getPerWorldData(world.getName())

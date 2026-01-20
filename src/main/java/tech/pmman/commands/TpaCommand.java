@@ -10,7 +10,6 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import lombok.Getter;
 import tech.pmman.gui.TpaTargetSelectorGui;
-import tech.pmman.util.CheckTool;
 
 import javax.annotation.Nonnull;
 
@@ -27,7 +26,6 @@ public class TpaCommand extends AbstractPlayerCommand implements PermissionGroup
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store,
                            @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
         // 打开选择gui
-        CheckTool.checkCommandFromPlayer(commandContext);
         Player player = commandContext.senderAs(Player.class);
         player.getPageManager()
               .openCustomPage(ref, store, new TpaTargetSelectorGui(playerRef));

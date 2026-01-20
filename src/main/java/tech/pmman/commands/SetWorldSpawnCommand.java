@@ -5,19 +5,19 @@ import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.math.vector.Transform;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
-import com.hypixel.hytale.server.core.command.system.basecommands.AbstractWorldCommand;
+import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.spawn.FitToHeightMapSpawnProvider;
 import com.hypixel.hytale.server.core.universe.world.spawn.GlobalSpawnProvider;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import lombok.Getter;
-import tech.pmman.util.CheckTool;
 import tech.pmman.util.MessageTool;
 import tech.pmman.util.PlayerTool;
 
 import javax.annotation.Nonnull;
 
-public class SetWorldSpawnCommand extends AbstractWorldCommand implements PermissionGroupSettable {
+public class SetWorldSpawnCommand extends AbstractPlayerCommand implements PermissionGroupSettable {
     @Getter
     private final String permissionStr = "simpleess.command.setworldspawn";
 
@@ -27,9 +27,8 @@ public class SetWorldSpawnCommand extends AbstractWorldCommand implements Permis
     }
 
     @Override
-    protected void execute(@Nonnull CommandContext commandContext, @Nonnull World world, @Nonnull Store<EntityStore> store) {
-        Ref<EntityStore> playerRef = CheckTool.getPlayerRefByCommandContext(commandContext);
-        Transform transform = PlayerTool.getTransform(store, playerRef).clone();
+    protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
+        Transform transform = PlayerTool.getTransform(store, ref).clone();
         FitToHeightMapSpawnProvider spawnProvider = new FitToHeightMapSpawnProvider(new GlobalSpawnProvider(transform));
         world.getWorldConfig()
              .setSpawnProvider(spawnProvider);

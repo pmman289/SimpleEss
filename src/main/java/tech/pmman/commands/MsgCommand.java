@@ -11,7 +11,6 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import lombok.Getter;
-import tech.pmman.util.CheckTool;
 import tech.pmman.util.MessageTool;
 
 import javax.annotation.Nonnull;
@@ -34,7 +33,6 @@ public class MsgCommand extends AbstractPlayerCommand implements PermissionGroup
 
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-        CheckTool.checkCommandFromPlayer(commandContext);
         PlayerRef targetPlayerRef = this.targetPlayerRefArg.get(commandContext);
         if (targetPlayerRef.getUuid()
                            .equals(playerRef.getUuid())) {
