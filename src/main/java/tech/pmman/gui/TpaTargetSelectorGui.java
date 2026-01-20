@@ -16,7 +16,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import lombok.Data;
-import tech.pmman.SimpleEssPlugin;
+import tech.pmman.ConfigManager;
 import tech.pmman.service.TpaManager;
 import tech.pmman.util.PlayerTool;
 
@@ -64,8 +64,8 @@ public class TpaTargetSelectorGui extends InteractiveCustomUIPage<TpaTargetSelec
                                                                        .param("requestCd", requestCd));
             }
             // 玩家关闭了tpa功能也要置灰
-            if (SimpleEssPlugin.playerTpaSettingsConfig.get()
-                                                       .getDisableTpa(iRef.getUuid())) {
+            if (ConfigManager.PLAYER_TPA_SETTINGS_DATA.get()
+                                                      .getDisableTpa(iRef.getUuid())) {
                 uiCommandBuilder.set(path + ".Disabled", true);
             }
             uiEventBuilder.addEventBinding(

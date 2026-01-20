@@ -4,7 +4,7 @@ import com.hypixel.hytale.math.vector.Transform;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
-import tech.pmman.SimpleEssPlugin;
+import tech.pmman.ConfigManager;
 import tech.pmman.pojo.PlayerLocationEntry;
 import tech.pmman.pojo.TpaRequestData;
 import tech.pmman.util.CheckTool;
@@ -18,8 +18,8 @@ public class TpaManager {
 
     public static void loadConfig() {
         // 从配置读取
-        TELEPORT_COOLDOWN = SimpleEssPlugin.pluginConfig.get()
-                                                        .getTeleportCooldown();
+        TELEPORT_COOLDOWN = ConfigManager.PLUGIN_CONFIG.get()
+                                                       .getTeleportCooldown();
     }
 
     // key为玩家uuid，value为要处理的请求
@@ -36,15 +36,15 @@ public class TpaManager {
 
     public static void sendTpaRequestWithClear(UUID from, UUID target) {
         // 如果玩家关闭了传送功能，则不发送请求
-        if (SimpleEssPlugin.playerTpaSettingsConfig.get()
-                                                   .getDisableTpa(target)) return;
+        if (ConfigManager.PLAYER_TPA_SETTINGS_DATA.get()
+                                                  .getDisableTpa(target)) return;
         PlayerRef fromPlayerRef = Universe.get()
                                           .getPlayer(from);
         PlayerRef targetPlayerRef = Universe.get()
                                             .getPlayer(target);
         CheckTool.checkPlayerRef(fromPlayerRef);
         CheckTool.checkPlayerRef(targetPlayerRef);
-        List<TpaRequestData> userRequestList = tpaDataMap.computeIfAbsent(target, k -> new ArrayList<>());
+        List<TpaRequestData> userRequestList = tpaDataMap.computeIfAbsent(target, _ -> new ArrayList<>());
         // 清理过期数据
         clearExpiredRequest(userRequestList);
         // 如果用户已在TELEPORT_COOLDOWN秒内发起过申请，则告知发起者
@@ -61,11 +61,11 @@ public class TpaManager {
         userRequestList.add(req);
         MessageTool.sendPluginMessage(targetPlayerRef, Message.translation("tpaRequestManager.requestReceived"));
         // 如果玩家开启自动接受申请，则自动调用接受
-        if (SimpleEssPlugin.playerTpaSettingsConfig.get()
-                                                   .getAutoAccept(target)) {
+        if (ConfigManager.PLAYER_TPA_SETTINGS_DATA.get()
+                                                  .getAutoAccept(target)) {
             acceptTpaRequest(from, target);
-        } else if (SimpleEssPlugin.playerTpaSettingsConfig.get()
-                                                          .getAutoDeny(target)) {
+        } else if (ConfigManager.PLAYER_TPA_SETTINGS_DATA.get()
+                                                         .getAutoDeny(target)) {
             // 如果开启了自动拒绝，则自动调用拒绝
             denyTpaRequest(from, target);
         }
@@ -79,7 +79,7 @@ public class TpaManager {
         CheckTool.checkPlayerRef(fromPlayerRef);
         CheckTool.checkPlayerRef(targetPlayerRef);
         // 移除数据
-        List<TpaRequestData> userRequestList = tpaDataMap.computeIfAbsent(target, k -> new ArrayList<>());
+        List<TpaRequestData> userRequestList = tpaDataMap.computeIfAbsent(target, _ -> new ArrayList<>());
         userRequestList.removeIf(o -> from.equals(o.getRequestPlayer()));
         // 传送玩家
         assert fromPlayerRef.getWorldUuid() != null;
@@ -112,7 +112,7 @@ public class TpaManager {
         CheckTool.checkPlayerRef(fromPlayerRef);
         CheckTool.checkPlayerRef(targetPlayerRef);
         // 移除数据
-        List<TpaRequestData> userRequestList = tpaDataMap.computeIfAbsent(target, k -> new ArrayList<>());
+        List<TpaRequestData> userRequestList = tpaDataMap.computeIfAbsent(target, _ -> new ArrayList<>());
         userRequestList.removeIf(o -> from.equals(o.getRequestPlayer()));
         // 发送通知
         MessageTool.sendPluginMessage(fromPlayerRef, Message.translation("tpaRequestManager.requestDeniedToFrom"));

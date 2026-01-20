@@ -7,14 +7,13 @@ import com.hypixel.hytale.math.vector.Vector3d;
 import com.hypixel.hytale.math.vector.Vector3f;
 import com.hypixel.hytale.server.core.entity.UUIDComponent;
 import com.hypixel.hytale.server.core.entity.entities.Player;
-import com.hypixel.hytale.server.core.modules.entity.component.HeadRotation;
 import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
 import com.hypixel.hytale.server.core.modules.entity.teleport.Teleport;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import tech.pmman.SimpleEssPlugin;
+import tech.pmman.ConfigManager;
 import tech.pmman.pojo.PlayerLocationEntry;
 
 import javax.annotation.Nonnull;
@@ -25,12 +24,6 @@ public class PlayerTool {
     public static Transform getTransform(Store<EntityStore> store, Ref<EntityStore> playerRef) {
         return Objects.requireNonNull(store.getComponent(playerRef, TransformComponent.getComponentType()))
                       .getTransform()
-                      .clone();
-    }
-
-    public static Vector3f getHeadRotation(Store<EntityStore> store, Ref<EntityStore> playerRef) {
-        return Objects.requireNonNull(store.getComponent(playerRef, HeadRotation.getComponentType()))
-                      .getRotation()
                       .clone();
     }
 
@@ -59,9 +52,9 @@ public class PlayerTool {
      */
     public static void recordPlayerTransformHistory(String playerUUID, PlayerLocationEntry locationEntry) {
         // 添加传送记录
-        SimpleEssPlugin.playerLastTeleportConfig.get()
-                                                .getLastTeleportData()
-                                                .put(playerUUID, locationEntry);
+        ConfigManager.PLAYER_LAST_TELEPORT_DATA.get()
+                                              .getLastTeleportData()
+                                              .put(playerUUID, locationEntry);
     }
 
     /**

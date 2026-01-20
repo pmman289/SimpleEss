@@ -6,7 +6,7 @@ import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import tech.pmman.SimpleEssPlugin;
+import tech.pmman.ConfigManager;
 
 import java.awt.*;
 
@@ -14,8 +14,8 @@ public class MessageTool {
     private static String PLUGIN_PREFIX = "";
 
     public static void loadConfig() {
-        PLUGIN_PREFIX = SimpleEssPlugin.pluginConfig.get()
-                                                    .getPluginPrefix();
+        PLUGIN_PREFIX = ConfigManager.PLUGIN_CONFIG.get()
+                                                   .getPluginPrefix();
     }
 
     public static void sendPluginMessage(PlayerRef playerRef, Message message) {
@@ -44,7 +44,8 @@ public class MessageTool {
     }
 
     public static void sendPluginMessageNoChangeColor(PlayerRef playerRef, Message message) {
-        Message resultMessage = Message.join(Message.raw(PLUGIN_PREFIX).color(Color.YELLOW), message);
+        Message resultMessage = Message.join(Message.raw(PLUGIN_PREFIX)
+                                                    .color(Color.YELLOW), message);
         playerRef.sendMessage(resultMessage);
     }
 }

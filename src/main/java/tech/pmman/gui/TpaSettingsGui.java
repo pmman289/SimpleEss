@@ -7,7 +7,6 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
@@ -15,7 +14,7 @@ import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import lombok.Data;
-import tech.pmman.SimpleEssPlugin;
+import tech.pmman.ConfigManager;
 import tech.pmman.pojo.PlayerTpaSettingsConfigEntry;
 import tech.pmman.util.PlayerTool;
 
@@ -28,8 +27,8 @@ public class TpaSettingsGui extends InteractiveCustomUIPage<TpaSettingsGui.TpaSe
     public TpaSettingsGui(@Nonnull PlayerRef playerRef) {
         super(playerRef, CustomPageLifetime.CanDismiss, TpaSettingsGuiData.CODEC);
         // 为玩家创建配置文件
-        Map<String, PlayerTpaSettingsConfigEntry> playerSettings = SimpleEssPlugin.playerTpaSettingsConfig.get()
-                                                                                                          .getPlayerSettings();
+        Map<String, PlayerTpaSettingsConfigEntry> playerSettings = ConfigManager.PLAYER_TPA_SETTINGS_DATA.get()
+                                                                                                         .getPlayerSettings();
         if (playerSettings.get(playerRef.getUuid()
                                         .toString()) == null) {
             playerSettings.put(playerRef.getUuid()

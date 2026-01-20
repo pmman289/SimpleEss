@@ -2,7 +2,7 @@ sethome.desc = Set your current location as a home
 sethome.execute = Your home has been set to your current location.
 sethome.desc.argName = Home name
 sethome.desc.argNameDefault = Default home name (default)
-sethome.outOfMaxHome = You have reached the limit of {maxHome} homes.
+sethome.outOfMaxHome = You have reached the maximum limit of {maxHome} homes.
 
 home.desc = Teleport to a set home
 home.desc.argName = Home name
@@ -27,3 +27,10 @@ msg.desc = Send a private message to a specific player
 msg.execute = whispers to you
 msg.executeMe = You whisper to
 msg.cannotSendSelf = You cannot send private messages to yourself.
+
+simpleess.desc = Main command for SimpleEss
+simpleess.execute = SimpleEss-{version}\nAvailable subcommands:\nreload
+
+simpleess.reload.desc = Reload SimpleEss configuration
+simpleess.reload.execute = Reloading configuration from file...
+simpleess.reload.executed = Configuration reloaded successfully.

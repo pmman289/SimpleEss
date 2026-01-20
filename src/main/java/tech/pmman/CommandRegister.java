@@ -2,12 +2,12 @@ package tech.pmman;
 
 import com.hypixel.hytale.server.core.command.system.AbstractCommand;
 import com.hypixel.hytale.server.core.command.system.CommandRegistry;
-import com.hypixel.hytale.server.core.permissions.PermissionsModule;
 import tech.pmman.commands.*;
 
 import java.util.Arrays;
 
 public class CommandRegister {
+    private final static SimpleEssCommand SIMPLE_ESS_COMMAND = new SimpleEssCommand();
     private final static SetWorldSpawnCommand SET_WORLD_SPAWN_COMMAND = new SetWorldSpawnCommand();
     private final static SetHomeCommand SET_HOME_COMMAND = new SetHomeCommand();
     private final static HomeCommand HOME_COMMAND = new HomeCommand();
@@ -18,6 +18,7 @@ public class CommandRegister {
     private final static MsgCommand MSG_COMMAND = new MsgCommand();
 
     private final static AbstractCommand[] ACTIVE_COMMAND = new AbstractCommand[]{
+            SIMPLE_ESS_COMMAND,
             SET_WORLD_SPAWN_COMMAND,
             SET_HOME_COMMAND,
             HOME_COMMAND,
@@ -40,11 +41,11 @@ public class CommandRegister {
     };
 
     public static void register(CommandRegistry commandRegistry) {
-        String[] publicCommand = SimpleEssPlugin.pluginConfig.get()
-                                                             .getPublicCommand();
+        String[] publicCommand = ConfigManager.PLUGIN_CONFIG.get()
+                                                            .getPublicCommand();
         // 授权处理
-        if (SimpleEssPlugin.pluginConfig.get()
-                                        .isEnablePublicCommandControl()) {
+        if (ConfigManager.PLUGIN_CONFIG.get()
+                                       .isEnablePublicCommandControl()) {
             for (AbstractCommand command : ACTIVE_COMMAND) {
                 // 如果开放了该命令，则自动向Default授权
                 if (Arrays.asList(publicCommand)

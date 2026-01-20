@@ -12,7 +12,7 @@ import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import lombok.Getter;
-import tech.pmman.SimpleEssPlugin;
+import tech.pmman.ConfigManager;
 import tech.pmman.pojo.PlayerLocationEntry;
 import tech.pmman.util.MessageTool;
 import tech.pmman.util.PlayerTool;
@@ -39,8 +39,8 @@ public class HomeCommand extends AbstractPlayerCommand implements PermissionGrou
         String homeName = name.get(commandContext);
         String uuid = playerRef.getUuid()
                                .toString();
-        Map<String, PlayerLocationEntry> homeMap = SimpleEssPlugin.playerHomeConfig.get()
-                                                                                   .getHomeMap(uuid);
+        Map<String, PlayerLocationEntry> homeMap = ConfigManager.PLAYER_HOME_DATA.get()
+                                                                .getHomeMap(uuid);
         if (!homeMap.containsKey(homeName)) {
             MessageTool.sendPluginMessage(commandContext, Message.translation("simpleEssCommand.home.nohome")
                                                                  .param("homeName", homeName));

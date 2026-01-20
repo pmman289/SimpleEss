@@ -10,7 +10,7 @@ import com.hypixel.hytale.server.core.permissions.PermissionsModule;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import tech.pmman.SimpleEssPlugin;
+import tech.pmman.ConfigManager;
 import tech.pmman.util.MessageTool;
 import tech.pmman.util.PlayerTool;
 
@@ -20,12 +20,12 @@ import java.util.UUID;
 
 public class EventListener {
     public static void register(EventRegistry registry) {
-        String welcomeText = SimpleEssPlugin.pluginConfig.get()
-                                                         .getWelcomeText();
-        String joinBroadcast = SimpleEssPlugin.pluginConfig.get()
-                                                           .getJoinBroadcast();
-        boolean autoAddToDefault = SimpleEssPlugin.pluginConfig.get()
-                                                               .isAutoAddNewPlayerToDefault();
+        String welcomeText = ConfigManager.PLUGIN_CONFIG.get()
+                                                        .getWelcomeText();
+        String joinBroadcast = ConfigManager.PLUGIN_CONFIG.get()
+                                                          .getJoinBroadcast();
+        boolean autoAddToDefault = ConfigManager.PLUGIN_CONFIG.get()
+                                                              .isAutoAddNewPlayerToDefault();
         if (!welcomeText.isEmpty()) {
             registry.registerGlobal(PlayerReadyEvent.class, EventListener::sendWelcomeText);
         }
@@ -49,16 +49,16 @@ public class EventListener {
     }
 
     public static void sendWelcomeText(PlayerReadyEvent event) {
-        String welcomeText = SimpleEssPlugin.pluginConfig.get()
-                                                         .getWelcomeText();
+        String welcomeText = ConfigManager.PLUGIN_CONFIG.get()
+                                                        .getWelcomeText();
 
         Player player = event.getPlayer();
         MessageTool.sendPluginMessage(player, Message.raw(welcomeText.replace("{player}", player.getDisplayName())));
     }
 
     public static void broadcastJoinMessage(PlayerReadyEvent event) {
-        String joinBroadcast = SimpleEssPlugin.pluginConfig.get()
-                                                           .getJoinBroadcast();
+        String joinBroadcast = ConfigManager.PLUGIN_CONFIG.get()
+                                                          .getJoinBroadcast();
         List<PlayerRef> players = Universe.get()
                                           .getPlayers();
         for (PlayerRef player : players) {

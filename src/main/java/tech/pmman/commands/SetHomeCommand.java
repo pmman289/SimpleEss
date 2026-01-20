@@ -12,7 +12,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import lombok.Getter;
-import tech.pmman.SimpleEssPlugin;
+import tech.pmman.ConfigManager;
 import tech.pmman.pojo.PlayerLocationEntry;
 import tech.pmman.util.MessageTool;
 
@@ -35,14 +35,14 @@ public class SetHomeCommand extends AbstractPlayerCommand implements PermissionG
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
         String uuid = playerRef.getUuid()
                                .toString();
-        Map<String, PlayerLocationEntry> homeMap = SimpleEssPlugin.playerHomeConfig.get()
-                                                                                   .getHomeMap(uuid);
+        Map<String, PlayerLocationEntry> homeMap = ConfigManager.PLAYER_HOME_DATA.get()
+                                                                                 .getHomeMap(uuid);
         // 限制不能超过配置中的最大home数量
-        if (homeMap.size() >= SimpleEssPlugin.pluginConfig.get()
-                                                          .getMaxHome()) {
+        if (homeMap.size() >= ConfigManager.PLUGIN_CONFIG.get()
+                                                         .getMaxHome()) {
             MessageTool.sendPluginMessage(commandContext, Message.translation("simpleEssCommand.sethome.outOfMaxHome")
-                                                                 .param("maxHome", SimpleEssPlugin.pluginConfig.get()
-                                                                                                               .getMaxHome()));
+                                                                 .param("maxHome", ConfigManager.PLUGIN_CONFIG.get()
+                                                                                                              .getMaxHome()));
             return;
         }
         Transform transform = playerRef.getTransform()

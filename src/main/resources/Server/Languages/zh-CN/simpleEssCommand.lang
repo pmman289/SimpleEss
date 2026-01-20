@@ -28,3 +28,10 @@ msg.desc = 向指定玩家发出私密消息
 msg.execute = 悄悄向你说
 msg.executeMe = 你悄悄说
 msg.cannotSendSelf = 你不能向自己发送私密消息
+
+simpleess.desc = SimpleEss主命令
+simpleess.execute = SimpleEss-{version}\n可用子命令：\nreload
+
+simpleess.reload.desc = SimpleEss重载配置
+simpleess.reload.execute = 正在从配置文件重新加载配置中
+simpleess.reload.executed = 从配置文件重载配置完成

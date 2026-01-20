@@ -10,7 +10,7 @@ import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import lombok.Getter;
-import tech.pmman.SimpleEssPlugin;
+import tech.pmman.ConfigManager;
 import tech.pmman.pojo.PlayerLocationEntry;
 import tech.pmman.util.MessageTool;
 import tech.pmman.util.PlayerTool;
@@ -32,8 +32,8 @@ public class BackCommand extends AbstractPlayerCommand implements PermissionGrou
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
         String uuid = playerRef.getUuid()
                                .toString();
-        Map<String, PlayerLocationEntry> lastTeleportData = SimpleEssPlugin.playerLastTeleportConfig.get()
-                                                                                                    .getLastTeleportData();
+        Map<String, PlayerLocationEntry> lastTeleportData = ConfigManager.PLAYER_LAST_TELEPORT_DATA.get()
+                                                                                                   .getLastTeleportData();
         if (!lastTeleportData.containsKey(uuid)) {
             MessageTool.sendPluginMessage(commandContext, Message.translation("simpleEssCommand.back.execute"));
             return;
