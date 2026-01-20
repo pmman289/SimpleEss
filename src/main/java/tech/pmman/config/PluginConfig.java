@@ -11,6 +11,8 @@ public class PluginConfig {
     private String joinBroadcast = "";
     private int teleportCooldown = 120;
     private int maxHome = 3;
+    private boolean autoAddNewPlayerToDefault = true;
+    private boolean enablePublicCommandControl = false;
     private String[] publicCommand = new String[]{
             "back",
             "backdeath",
@@ -51,6 +53,18 @@ public class PluginConfig {
                                 new KeyedCodec<>("MaxHome", BuilderCodec.INTEGER),
                                 (o, d) -> o.maxHome = d,
                                 o -> o.maxHome
+                        )
+                        .add()
+                        .append(
+                                new KeyedCodec<>("AutoAddPlayerToDefault", BuilderCodec.BOOLEAN),
+                                (o, d) -> o.autoAddNewPlayerToDefault = d,
+                                o -> o.autoAddNewPlayerToDefault
+                        )
+                        .add()
+                        .append(
+                                new KeyedCodec<>("EnablePublicCommandControl", BuilderCodec.BOOLEAN),
+                                (o, d) -> o.enablePublicCommandControl = d,
+                                o -> o.enablePublicCommandControl
                         )
                         .add()
                         .append(

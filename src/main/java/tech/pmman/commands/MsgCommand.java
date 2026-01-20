@@ -10,6 +10,7 @@ import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayer
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import lombok.Getter;
 import tech.pmman.util.CheckTool;
 import tech.pmman.util.MessageTool;
 
@@ -17,6 +18,9 @@ import javax.annotation.Nonnull;
 import java.awt.*;
 
 public class MsgCommand extends AbstractPlayerCommand implements PermissionGroupSettable {
+    @Getter
+    private final String permissionStr = "simpleess.command.msg";
+
     private final RequiredArg<PlayerRef> targetPlayerRefArg;
     private final RequiredArg<String> messageArg;
 
@@ -25,6 +29,7 @@ public class MsgCommand extends AbstractPlayerCommand implements PermissionGroup
         addAliases("m", "talk", "wisper");
         targetPlayerRefArg = withRequiredArg("targetPlayer", "simpleEssCommand.msg.argTargetPlayer", ArgTypes.PLAYER_REF);
         messageArg = withRequiredArg("message", "simpleEssCommand.msg.argMessage", ArgTypes.STRING);
+        requirePermission(permissionStr);
     }
 
     @Override

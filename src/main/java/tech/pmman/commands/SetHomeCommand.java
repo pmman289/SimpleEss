@@ -11,6 +11,7 @@ import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayer
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import lombok.Getter;
 import tech.pmman.SimpleEssPlugin;
 import tech.pmman.pojo.PlayerLocationEntry;
 import tech.pmman.util.MessageTool;
@@ -19,11 +20,15 @@ import javax.annotation.Nonnull;
 import java.util.Map;
 
 public class SetHomeCommand extends AbstractPlayerCommand implements PermissionGroupSettable {
+    @Getter
+    private final String permissionStr = "simpleess.command.sethome";
+
     private final DefaultArg<String> name;
 
     public SetHomeCommand() {
         super("sethome", "simpleEssCommand.sethome.desc");
         name = withDefaultArg("name", "simpleEssCommand.sethome.desc.argName", ArgTypes.STRING, "default", "simpleEssCommand.sethome.desc.argNameDefault");
+        requirePermission(permissionStr);
     }
 
     @Override

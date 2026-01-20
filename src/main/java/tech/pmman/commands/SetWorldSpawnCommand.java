@@ -10,6 +10,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.spawn.FitToHeightMapSpawnProvider;
 import com.hypixel.hytale.server.core.universe.world.spawn.GlobalSpawnProvider;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import lombok.Getter;
 import tech.pmman.util.CheckTool;
 import tech.pmman.util.MessageTool;
 import tech.pmman.util.PlayerTool;
@@ -17,9 +18,12 @@ import tech.pmman.util.PlayerTool;
 import javax.annotation.Nonnull;
 
 public class SetWorldSpawnCommand extends AbstractWorldCommand implements PermissionGroupSettable {
+    @Getter
+    private final String permissionStr = "simpleess.command.setworldspawn";
 
     public SetWorldSpawnCommand() {
         super("setworldspawn", "simpleEssCommand.setworldspawn.desc");
+        requirePermission(permissionStr);
     }
 
     @Override

@@ -8,14 +8,19 @@ import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import lombok.Getter;
 import tech.pmman.gui.TpaRequestManagerGui;
 import tech.pmman.util.CheckTool;
 
 import javax.annotation.Nonnull;
 
 public class TpaTabCommand extends AbstractPlayerCommand implements PermissionGroupSettable {
+    @Getter
+    private final String permissionStr = "simpleess.command.tpatab";
+
     public TpaTabCommand() {
         super("tpatab", "simpleEssCommand.tpatab.desc");
+        requirePermission(permissionStr);
     }
 
     @Override

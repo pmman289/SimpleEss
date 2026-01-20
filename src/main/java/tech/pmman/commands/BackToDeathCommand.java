@@ -12,6 +12,7 @@ import com.hypixel.hytale.server.core.entity.entities.player.data.PlayerDeathPos
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import lombok.Getter;
 import tech.pmman.pojo.PlayerLocationEntry;
 import tech.pmman.util.MessageTool;
 import tech.pmman.util.PlayerTool;
@@ -20,9 +21,12 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 public class BackToDeathCommand extends AbstractPlayerCommand implements PermissionGroupSettable {
+    @Getter
+    private final String permissionStr = "simpleess.command.backdeath";
 
     public BackToDeathCommand() {
         super("backdeath", "simpleEssCommand.backdeath.desc");
+        requirePermission(permissionStr);
     }
 
     @Override

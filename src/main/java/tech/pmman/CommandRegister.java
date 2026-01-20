@@ -1,8 +1,8 @@
 package tech.pmman;
 
-import com.hypixel.hytale.protocol.GameMode;
 import com.hypixel.hytale.server.core.command.system.AbstractCommand;
 import com.hypixel.hytale.server.core.command.system.CommandRegistry;
+import com.hypixel.hytale.server.core.permissions.PermissionsModule;
 import tech.pmman.commands.*;
 
 import java.util.Arrays;
@@ -28,16 +28,36 @@ public class CommandRegister {
             MSG_COMMAND
     };
 
+    // 如果配置文件没有打开限制开放的命令设置，则使用这里的默认开放
+    private final static AbstractCommand[] DEFAULT_PUBLIC_COMMAND = new AbstractCommand[]{
+            SET_HOME_COMMAND,
+            HOME_COMMAND,
+            BACK_COMMAND,
+            BACK_TO_DEATH_COMMAND,
+            TPA_COMMAND,
+            TPA_TAB_COMMAND,
+            MSG_COMMAND
+    };
+
     public static void register(CommandRegistry commandRegistry) {
         String[] publicCommand = SimpleEssPlugin.pluginConfig.get()
                                                              .getPublicCommand();
-        for (AbstractCommand command : ACTIVE_COMMAND) {
-            // 如果开放了该命令，则加入Default组
-            if (Arrays.asList(publicCommand)
-                      .contains(command.getName())) {
-                ((PermissionGroupSettable) command).resetPermissionGroups("Default", GameMode.Adventure.toString(), GameMode.Creative.toString());
+        // 授权处理
+        if (SimpleEssPlugin.pluginConfig.get()
+                                        .isEnablePublicCommandControl()) {
+            for (AbstractCommand command : ACTIVE_COMMAND) {
+                // 如果开放了该命令，则自动向Default授权
+                if (Arrays.asList(publicCommand)
+                          .contains(command.getName())) {
+                    ((PermissionGroupSettable) command).resetPermissionGroups("Default");
+                }
             }
-            commandRegistry.registerCommand(command);
+        } else {
+            for (AbstractCommand command : DEFAULT_PUBLIC_COMMAND) {
+                ((PermissionGroupSettable) command).resetPermissionGroups("Default");
+            }
         }
+        Arrays.stream(ACTIVE_COMMAND)
+              .forEach(commandRegistry::registerCommand);
     }
 }

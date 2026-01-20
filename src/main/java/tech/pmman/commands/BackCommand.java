@@ -9,6 +9,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import lombok.Getter;
 import tech.pmman.SimpleEssPlugin;
 import tech.pmman.pojo.PlayerLocationEntry;
 import tech.pmman.util.MessageTool;
@@ -19,9 +20,12 @@ import java.util.Map;
 import java.util.UUID;
 
 public class BackCommand extends AbstractPlayerCommand implements PermissionGroupSettable {
+    @Getter
+    private final String permissionStr = "simpleess.command.back";
 
     public BackCommand() {
         super("back", "simpleEssCommand.back.desc");
+        requirePermission(permissionStr);
     }
 
     @Override
@@ -40,6 +44,7 @@ public class BackCommand extends AbstractPlayerCommand implements PermissionGrou
                                     .getWorld(UUID.fromString(location.getWorldUUID()));
         if (targetWorld == null || !targetWorld.isAlive()) {
             MessageTool.sendPluginMessage(playerRef, Message.translation("simpleEssCore.teleport.targetWorldNotOnline"));
+            return;
         }
         PlayerTool.teleportPlayer(ref, world, location.getPosition(), location.getRotation());
     }
