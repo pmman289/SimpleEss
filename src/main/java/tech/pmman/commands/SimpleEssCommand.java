@@ -10,7 +10,7 @@ import tech.pmman.util.MessageTool;
 
 import javax.annotation.Nonnull;
 
-public class SimpleEssCommand extends CommandBase {
+public class SimpleEssCommand extends CommandBase implements PermissionGroupSettable {
     @Getter
     private final String permissionStr = "simpleess.command.simpleess";
 
@@ -28,5 +28,10 @@ public class SimpleEssCommand extends CommandBase {
         Message msg = Message.translation("simpleEssCommand.simpleess.execute")
                              .param("version", SimpleEssPlugin.VERSION);
         MessageTool.sendPluginMessage(commandContext, msg);
+    }
+
+    @Override
+    public void resetPermissionGroups(String... groups) {
+        setPermissionGroups(groups);
     }
 }

@@ -8,6 +8,7 @@ import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.arguments.system.DefaultArg;
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
+import com.hypixel.hytale.server.core.permissions.PermissionsModule;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
@@ -33,13 +34,15 @@ public class SetHomeCommand extends AbstractPlayerCommand implements PermissionG
 
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
+        PermissionsModule permissionsModule = PermissionsModule.get();
         String uuid = playerRef.getUuid()
                                .toString();
         Map<String, PlayerLocationEntry> homeMap = ConfigManager.PLAYER_HOME_DATA.get()
                                                                                  .getHomeMap(uuid);
-        // 限制不能超过配置中的最大home数量
+        // 限制不能超过配置中的最大home数量，如果有bypass权限就不限制
         if (homeMap.size() >= ConfigManager.PLUGIN_CONFIG.get()
-                                                         .getMaxHome()) {
+                                                         .getMaxHome() &&
+                !permissionsModule.hasPermission(playerRef.getUuid(), "simpleess.command.sethome.limit.bypass")) {
             MessageTool.sendPluginMessage(commandContext, Message.translation("simpleEssCommand.sethome.outOfMaxHome")
                                                                  .param("maxHome", ConfigManager.PLUGIN_CONFIG.get()
                                                                                                               .getMaxHome()));

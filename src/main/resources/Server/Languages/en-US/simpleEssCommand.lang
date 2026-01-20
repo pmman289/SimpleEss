@@ -34,3 +34,8 @@ simpleess.execute = SimpleEss-{version}\nAvailable subcommands:\nreload
 simpleess.reload.desc = Reload SimpleEss configuration
 simpleess.reload.execute = Reloading configuration from file...
 simpleess.reload.executed = Configuration reloaded successfully.
+
+rtp.desc = Teleport to a random location in the current world
+rtp.execute = You have been randomly teleported to x:{x} y:{y} z:{z}
+rtp.failed = Failed to find a suitable location after multiple attempts. If this persists, please contact an administrator.
+rtp.cooldown = You must wait {cooldown} seconds before using random teleport again.

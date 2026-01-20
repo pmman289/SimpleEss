@@ -5,11 +5,12 @@ import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
 import lombok.Getter;
 import tech.pmman.ConfigManager;
+import tech.pmman.commands.PermissionGroupSettable;
 import tech.pmman.util.MessageTool;
 
 import javax.annotation.Nonnull;
 
-public class SimpleEssReloadCommand extends CommandBase {
+public class SimpleEssReloadCommand extends CommandBase implements PermissionGroupSettable {
     @Getter
     private final String permissionStr = "simpleess.command.simpleess.reload";
 
@@ -27,5 +28,10 @@ public class SimpleEssReloadCommand extends CommandBase {
         MessageTool.sendPluginMessage(
                 commandContext, Message.translation("simpleEssCommand.simpleess.reload.executed")
         );
+    }
+
+    @Override
+    public void resetPermissionGroups(String... groups) {
+        setPermissionGroups(groups);
     }
 }

@@ -5,6 +5,7 @@ import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.util.Config;
 import tech.pmman.events.EventListener;
+import tech.pmman.events.MemClearListener;
 import tech.pmman.service.TpaManager;
 import tech.pmman.util.MessageTool;
 
@@ -32,6 +33,7 @@ public class SimpleEssPlugin extends JavaPlugin {
         CommandRegister.register(getCommandRegistry());
         // 注册事件
         EventListener.register(getEventRegistry());
+        MemClearListener.register(getEventRegistry());
     }
 
     @Override

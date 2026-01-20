@@ -35,3 +35,8 @@ simpleess.execute = SimpleEss-{version}\n可用子命令：\nreload
 simpleess.reload.desc = SimpleEss重载配置
 simpleess.reload.execute = 正在从配置文件重新加载配置中
 simpleess.reload.executed = 从配置文件重载配置完成
+
+rtp.desc = 在当前世界随机传送
+rtp.execute = 你已被随机传送到x:{x} y:{y} z:{z}
+rtp.failed = 多次尝试后仍然无法找到合适的传送目的地，如果多次出现，请报告管理员
+rtp.cooldown = 你还需要等待{cooldown}秒后才能再次随机传送

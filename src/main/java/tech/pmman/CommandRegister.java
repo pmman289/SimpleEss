@@ -16,6 +16,7 @@ public class CommandRegister {
     private final static TpaCommand TPA_COMMAND = new TpaCommand();
     private final static TpaTabCommand TPA_TAB_COMMAND = new TpaTabCommand();
     private final static MsgCommand MSG_COMMAND = new MsgCommand();
+    private final static RtpCommand RTP_COMMAND = new RtpCommand();
 
     private final static AbstractCommand[] ACTIVE_COMMAND = new AbstractCommand[]{
             SIMPLE_ESS_COMMAND,
@@ -26,7 +27,8 @@ public class CommandRegister {
             BACK_TO_DEATH_COMMAND,
             TPA_COMMAND,
             TPA_TAB_COMMAND,
-            MSG_COMMAND
+            MSG_COMMAND,
+            RTP_COMMAND
     };
 
     // 如果配置文件没有打开限制开放的命令设置，则使用这里的默认开放
@@ -37,7 +39,8 @@ public class CommandRegister {
             BACK_TO_DEATH_COMMAND,
             TPA_COMMAND,
             TPA_TAB_COMMAND,
-            MSG_COMMAND
+            MSG_COMMAND,
+            RTP_COMMAND
     };
 
     public static void register(CommandRegistry commandRegistry) {
@@ -49,7 +52,7 @@ public class CommandRegister {
             for (AbstractCommand command : ACTIVE_COMMAND) {
                 // 如果开放了该命令，则自动向Default授权
                 if (Arrays.asList(publicCommand)
-                          .contains(command.getName())) {
+                          .contains(command.getName()) && command instanceof PermissionGroupSettable) {
                     ((PermissionGroupSettable) command).resetPermissionGroups("Default");
                 }
             }

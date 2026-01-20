@@ -9,6 +9,7 @@ import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
+import com.hypixel.hytale.server.core.permissions.PermissionsModule;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
@@ -33,6 +34,7 @@ public class TpaTargetSelectorGui extends InteractiveCustomUIPage<TpaTargetSelec
 
     @Override
     public void build(@Nonnull Ref<EntityStore> ref, @Nonnull UICommandBuilder uiCommandBuilder, @Nonnull UIEventBuilder uiEventBuilder, @Nonnull Store<EntityStore> store) {
+        PermissionsModule permissionsModule = PermissionsModule.get();
         uiCommandBuilder.append("Pages/Tpa/Tpa_Target_Player_Selector.ui");
         uiEventBuilder.addEventBinding(
                 CustomUIEventBindingType.Activating,
@@ -58,7 +60,9 @@ public class TpaTargetSelectorGui extends InteractiveCustomUIPage<TpaTargetSelec
                                                                    .param("worldName", worldName));
             // 如果不能请求，则将按钮置灰()
             int requestCd = TpaManager.getRequestCdWithRemoveExpiredRequest(PlayerTool.getUUID(store, ref), iRef.getUuid());
-            if (requestCd > 0) {
+            // 如果有bypass权限，则跳过
+            if (requestCd > 0 &&
+                    !permissionsModule.hasPermission(playerRef.getUuid(), "simpleess.command.tpa.cooldown.bypass")) {
                 uiCommandBuilder.set(path + ".Disabled", true);
                 uiCommandBuilder.set(path + " #RequestCd.Text", Message.translation("tpaSelector.requestCd")
                                                                        .param("requestCd", requestCd));
