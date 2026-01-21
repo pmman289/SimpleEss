@@ -12,7 +12,7 @@ import tech.pmman.util.MessageTool;
 import javax.annotation.Nonnull;
 
 public class SimpleEssPlugin extends JavaPlugin {
-    public static final String VERSION = "v0.0.3-beta";
+    public static final String VERSION = "v0.0.4-beta";
 
     public SimpleEssPlugin(@Nonnull JavaPluginInit init) {
         super(init);
