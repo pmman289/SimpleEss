@@ -129,7 +129,7 @@ The plugin provides a flexible configuration file with the following options:
 
 ---
 
-# SimpleEss（中文说明）
+# SimpleEss
 
 SimpleEss 是一个 **Hytale 服务器管理插件**，为管理员与普通玩家提供常用指令与基础 QoL 功能，并配备清晰、可控的权限体系。
 
