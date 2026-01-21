@@ -27,7 +27,7 @@ public class HomeCommand extends AbstractPlayerCommand implements PermissionGrou
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
         String homeName = "default";
-        HomeService.goHome(homeName, commandContext, store, ref, playerRef, world);
+        HomeService.goHome(homeName, commandContext, ref, playerRef);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class HomeCommand extends AbstractPlayerCommand implements PermissionGrou
         @Override
         protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
             String homeName = name.get(commandContext);
-            HomeService.goHome(homeName, commandContext, store, ref, playerRef, world);
+            HomeService.goHome(homeName, commandContext, ref, playerRef);
         }
     }
 }

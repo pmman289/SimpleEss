@@ -26,7 +26,7 @@ public class SetHomeCommand extends AbstractPlayerCommand implements PermissionG
 
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-        SetHomeService.setHome("default", commandContext, store, ref, playerRef, world);
+        SetHomeService.setHome("default", commandContext, playerRef, world);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class SetHomeCommand extends AbstractPlayerCommand implements PermissionG
 
         @Override
         protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-            SetHomeService.setHome(name.get(commandContext), commandContext, store, ref, playerRef, world);
+            SetHomeService.setHome(name.get(commandContext), commandContext, playerRef, world);
         }
     }
 }
