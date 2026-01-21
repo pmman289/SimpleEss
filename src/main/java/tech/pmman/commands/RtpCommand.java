@@ -43,7 +43,7 @@ public class RtpCommand extends AbstractPlayerCommand implements PermissionGroup
         PermissionsModule permissionsModule = PermissionsModule.get();
         // 获取剩余冷却时间
         int remainCooldown = CooldownService.tryUseCooldownService(playerRef.getUuid()
-                                                                    .toString(), getName(),
+                                                                            .toString(), getName(),
                 ConfigManager.PLUGIN_CONFIG.get()
                                            .getRtpCooldown());
         // 如果具有权限则跳过cd检查
@@ -76,6 +76,13 @@ public class RtpCommand extends AbstractPlayerCommand implements PermissionGroup
                 targetPos.setY(targetPos.y + 1);
                 PlayerTool.teleportPlayer(ref, world, targetPos.toVector3d(), playerRef.getTransform()
                                                                                        .getRotation());
+                // 记录传送记录
+                PlayerTool.recordPlayerTransformHistory(playerRef.getUuid()
+                                                                 .toString(), world.getWorldConfig()
+                                                                                   .getUuid()
+                                                                                   .toString(),
+                        targetPos.toVector3d(), playerRef.getTransform()
+                                                         .getRotation());
                 MessageTool.sendPluginMessage(commandContext, Message.translation("simpleEssCommand.rtp.execute")
                                                                      .param("x", targetPos.x)
                                                                      .param("y", targetPos.y)
