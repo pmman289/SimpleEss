@@ -6,7 +6,7 @@ import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.util.Config;
 import tech.pmman.events.EventListener;
 import tech.pmman.events.MemClearListener;
-import tech.pmman.service.TpaManager;
+import tech.pmman.service.TpaService;
 import tech.pmman.util.MessageTool;
 
 import javax.annotation.Nonnull;
@@ -35,7 +35,7 @@ public class SimpleEssPlugin extends JavaPlugin {
         // 加载数据库
         DbManager.getInstance().init();
         ConfigManager.setup();
-        TpaManager.loadConfig();
+        TpaService.loadConfig();
         MessageTool.loadConfig();
         // 注册命令
         CommandRegister.register(getCommandRegistry());

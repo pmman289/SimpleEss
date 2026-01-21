@@ -18,7 +18,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import lombok.Getter;
 import tech.pmman.ConfigManager;
 import tech.pmman.pojo.WorldPlaneData;
-import tech.pmman.service.CommandCooldownService;
+import tech.pmman.service.CooldownService;
 import tech.pmman.util.MessageTool;
 import tech.pmman.util.PlayerTool;
 
@@ -42,8 +42,8 @@ public class RtpCommand extends AbstractPlayerCommand implements PermissionGroup
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
         PermissionsModule permissionsModule = PermissionsModule.get();
         // 获取剩余冷却时间
-        int remainCooldown = CommandCooldownService.tryUseCommand(playerRef.getUuid()
-                                                                           .toString(), getName(),
+        int remainCooldown = CooldownService.tryUseCommand(playerRef.getUuid()
+                                                                    .toString(), getName(),
                 ConfigManager.PLUGIN_CONFIG.get()
                                            .getRtpCooldown());
         // 如果具有权限则跳过cd检查

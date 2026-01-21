@@ -16,7 +16,7 @@ import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import tech.pmman.pojo.TpaRequestData;
-import tech.pmman.service.TpaManager;
+import tech.pmman.service.TpaService;
 import tech.pmman.util.PlayerTool;
 
 import javax.annotation.Nonnull;
@@ -36,7 +36,7 @@ public class TpaRequestManagerGui extends InteractiveCustomUIPage<TpaRequestMana
 
         // 1. 获取当前玩家收到的所有请求
         UUID myUuid = playerRef.getUuid();
-        List<TpaRequestData> requests = TpaManager.getTargetAllRequestList(myUuid);
+        List<TpaRequestData> requests = TpaService.getTargetAllRequestList(myUuid);
         if (requests == null) {
             requests = Collections.emptyList();
         }
@@ -49,7 +49,7 @@ public class TpaRequestManagerGui extends InteractiveCustomUIPage<TpaRequestMana
             String requesterName = PlayerTool.getNameByUUID(req.getRequestPlayer());
             uiCommandBuilder.set(path + " #RequesterName.Text", requesterName);
             uiCommandBuilder.set(path + " #RequestTime.Text", Message.translation("tpaRequestManager.requestTime")
-                                                                     .param("requestTime", TpaManager.getRequestCdWithRemoveExpiredRequest(req.getRequestPlayer(), myUuid)));
+                                                                     .param("requestTime", TpaService.getRequestCdWithRemoveExpiredRequest(req.getRequestPlayer(), myUuid)));
             // 2. 绑定批准事件
             uiEventBuilder.addEventBinding(
                     CustomUIEventBindingType.Activating,
@@ -92,10 +92,10 @@ public class TpaRequestManagerGui extends InteractiveCustomUIPage<TpaRequestMana
                   .openCustomPage(ref, store, new TpaSettingsGui(playerRef));
         }
         if (data.getAcceptRequesterUuid() != null) {
-            TpaManager.acceptTpaRequest(data.getAcceptRequesterUuid(), playerRef.getUuid());
+            TpaService.acceptTpaRequest(data.getAcceptRequesterUuid(), playerRef.getUuid());
             close();
         } else if (data.getDenyRequesterUuid() != null) {
-            TpaManager.denyTpaRequest(data.getDenyRequesterUuid(), playerRef.getUuid());
+            TpaService.denyTpaRequest(data.getDenyRequesterUuid(), playerRef.getUuid());
             close();
         }
     }

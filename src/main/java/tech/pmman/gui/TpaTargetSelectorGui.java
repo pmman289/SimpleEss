@@ -18,7 +18,7 @@ import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import lombok.Data;
 import tech.pmman.ConfigManager;
-import tech.pmman.service.TpaManager;
+import tech.pmman.service.TpaService;
 import tech.pmman.util.PlayerTool;
 
 import javax.annotation.Nonnull;
@@ -59,7 +59,7 @@ public class TpaTargetSelectorGui extends InteractiveCustomUIPage<TpaTargetSelec
             uiCommandBuilder.set(path + " #WorldName.Text", Message.translation("tpaSelector.worldName")
                                                                    .param("worldName", worldName));
             // 如果不能请求，则将按钮置灰()
-            int requestCd = TpaManager.getRequestCdWithRemoveExpiredRequest(PlayerTool.getUUID(store, ref), iRef.getUuid());
+            int requestCd = TpaService.getRequestCdWithRemoveExpiredRequest(PlayerTool.getUUID(store, ref), iRef.getUuid());
             // 如果有bypass权限，则跳过
             if (requestCd > 0 &&
                     !permissionsModule.hasPermission(playerRef.getUuid(), "simpleess.command.tpa.cooldown.bypass")) {
@@ -89,7 +89,7 @@ public class TpaTargetSelectorGui extends InteractiveCustomUIPage<TpaTargetSelec
         }
         if (data.getTargetUUID() != null) {
             // 发送传送请求
-            TpaManager.sendTpaRequestWithClear(PlayerTool.getUUID(store, playerRef), data.getTargetUUID());
+            TpaService.sendTpaRequestWithClear(PlayerTool.getUUID(store, playerRef), data.getTargetUUID());
             close();
         }
     }

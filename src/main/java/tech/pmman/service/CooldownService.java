@@ -5,7 +5,7 @@ import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class CommandCooldownService {
+public class CooldownService {
     private static final Map<String, Map<String, Long>> cooldownData = new ConcurrentHashMap<>();
 
     public static void clearUserData(PlayerDisconnectEvent event) {

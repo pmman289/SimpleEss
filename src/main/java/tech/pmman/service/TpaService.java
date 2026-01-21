@@ -13,7 +13,7 @@ import tech.pmman.util.PlayerTool;
 
 import java.util.*;
 
-public class TpaManager {
+public class TpaService {
     private static int TELEPORT_COOLDOWN = 120;
 
     public static void loadConfig() {
