@@ -13,7 +13,8 @@ public interface PersistenceRecordMapper extends TableMapper {
                   "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                   "uuid" text NOT NULL,
                   "key" TEXT NOT NULL,
-                  "last_timestamp" integer NOT NULL
+                  "last_timestamp" integer NOT NULL,
+                  CONSTRAINT "unique1" UNIQUE ("uuid", "key")
                 );
                 """;
     }
