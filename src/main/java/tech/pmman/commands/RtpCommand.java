@@ -42,7 +42,7 @@ public class RtpCommand extends AbstractPlayerCommand implements PermissionGroup
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
         PermissionsModule permissionsModule = PermissionsModule.get();
         // 获取剩余冷却时间
-        int remainCooldown = CooldownService.tryUseCommand(playerRef.getUuid()
+        int remainCooldown = CooldownService.tryUseCooldownService(playerRef.getUuid()
                                                                     .toString(), getName(),
                 ConfigManager.PLUGIN_CONFIG.get()
                                            .getRtpCooldown());
