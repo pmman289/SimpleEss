@@ -14,7 +14,11 @@ import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import tech.pmman.ConfigManager;
+import tech.pmman.DbManager;
+import tech.pmman.dao.mapper.PlayerTeleportHistoryMapper;
+import tech.pmman.pojo.Location;
 import tech.pmman.pojo.PlayerLocationEntry;
+import tech.pmman.pojo.db.PlayerTeleportHistory;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -47,14 +51,21 @@ public class PlayerTool {
     /**
      * 记录传送历史记录
      *
-     * @param playerUUID    玩家uuid
-     * @param locationEntry location对象
+     * @param playerUUID 玩家uuid
+     * @param position   位置信息
+     * @param rotation   旋转信息
      */
-    public static void recordPlayerTransformHistory(String playerUUID, PlayerLocationEntry locationEntry) {
+    public static void recordPlayerTransformHistory(String playerUUID, String worldUUID, Vector3d position, Vector3f rotation) {
         // 添加传送记录
-        ConfigManager.PLAYER_LAST_TELEPORT_DATA.get()
-                                              .getLastTeleportData()
-                                              .put(playerUUID, locationEntry);
+        DbManager.getInstance()
+                 .get()
+                 .useExtension(PlayerTeleportHistoryMapper.class, dao -> {
+                     PlayerTeleportHistory insertDo = new PlayerTeleportHistory();
+                     insertDo.setUuid(playerUUID);
+                     insertDo.setWorldUUID(worldUUID);
+                     insertDo.setLocation(new Location(position, rotation));
+                     dao.insertTeleportHistory(insertDo);
+                 });
     }
 
     /**

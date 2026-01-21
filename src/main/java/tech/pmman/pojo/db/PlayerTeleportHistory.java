@@ -4,20 +4,18 @@ import lombok.Data;
 import tech.pmman.pojo.Location;
 
 @Data
-public class PlayerHomeEntry {
+public class PlayerTeleportHistory {
     private String uuid;
-    private String homeName;
     private String worldUUID;
     private Location location;
 
-    public PlayerHomeEntry(String uuid, String homeName, String worldUUID, Location location) {
+    public PlayerTeleportHistory(String uuid, String worldUUID, Location location) {
         this.uuid = uuid;
-        this.homeName = homeName;
         this.worldUUID = worldUUID;
         this.location = location;
     }
 
-    public PlayerHomeEntry() {
+    public PlayerTeleportHistory() {
     }
 
     public void setLocation(String locationStr) {

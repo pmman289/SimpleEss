@@ -42,12 +42,10 @@ public class BackToDeathCommand extends AbstractPlayerCommand implements Permiss
                                             .getTransform();
         PlayerTool.teleportPlayer(ref, world, lastDeath.getPosition(), lastDeath.getRotation());
         PlayerTool.recordPlayerTransformHistory(playerRef.getUuid()
-                                                         .toString(),
-                new PlayerLocationEntry(world.getWorldConfig()
-                                             .getUuid()
-                                             .toString(),
-                        lastDeath.getPosition(),
-                        lastDeath.getRotation()));
+                                                         .toString(), world.getWorldConfig()
+                                                                           .getUuid()
+                                                                           .toString(), lastDeath.getPosition(),
+                lastDeath.getRotation());
     }
 
     @Override

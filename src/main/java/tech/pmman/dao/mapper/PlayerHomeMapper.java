@@ -6,17 +6,17 @@ import org.jdbi.v3.sqlobject.customizer.BindBean;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import tech.pmman.core.db.TableMapper;
-import tech.pmman.pojo.db.PlayerHomeEntry;
+import tech.pmman.pojo.db.PlayerHome;
 
 import java.util.List;
 
-@RegisterBeanMapper(PlayerHomeEntry.class)
+@RegisterBeanMapper(PlayerHome.class)
 public interface PlayerHomeMapper extends TableMapper {
     @Override
     default String getCreateTableSql() {
         return """
                 CREATE TABLE IF NOT EXISTS "player_home" (
-                  "id" INTEGER NOT NULL,
+                  "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                   "uuid" text NOT NULL,
                   "home_name" TEXT NOT NULL,
                   "world_uuid" TEXT NOT NULL,
@@ -31,18 +31,18 @@ public interface PlayerHomeMapper extends TableMapper {
             INSERT INTO player_home (uuid, home_name, world_uuid, location)
             VALUES (:uuid, :homeName, :worldUUID, :location)
             """)
-    int insert(@BindBean PlayerHomeEntry playerHomeEntry);
+    int insert(@BindBean PlayerHome playerHome);
 
     @SqlUpdate("""
             UPDATE player_home
             SET location = :location, world_uuid = :worldUUID
             WHERE uuid = :uuid AND home_name = :homeName
             """)
-    int updateLocationAndWorld(@BindBean PlayerHomeEntry playerHomeEntry);
+    int updateLocationAndWorld(@BindBean PlayerHome playerHome);
 
     @SqlQuery("""
             SELECT uuid, home_name, world_uuid, location from player_home
             WHERE uuid = :uuid
             """)
-    List<PlayerHomeEntry> queryPlayerHomes(@Bind("uuid") String uuid);
+    List<PlayerHome> queryPlayerHomes(@Bind("uuid") String uuid);
 }

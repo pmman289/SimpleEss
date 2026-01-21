@@ -6,6 +6,7 @@ import tech.pmman.core.db.DatabaseProvider;
 import tech.pmman.core.db.TableMapper;
 import tech.pmman.dao.mapper.PersistenceRecordMapper;
 import tech.pmman.dao.mapper.PlayerHomeMapper;
+import tech.pmman.dao.mapper.PlayerTeleportHistoryMapper;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -15,7 +16,8 @@ public class DbManager implements DatabaseProvider {
 
     private static final List<Class<? extends TableMapper>> ACTIVE_TABLE = List.of(
             PersistenceRecordMapper.class,
-            PlayerHomeMapper.class
+            PlayerHomeMapper.class,
+            PlayerTeleportHistoryMapper.class
     );
 
     private Jdbi JDBI;

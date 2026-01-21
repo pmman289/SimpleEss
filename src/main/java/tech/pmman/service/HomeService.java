@@ -10,7 +10,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import tech.pmman.DbManager;
 import tech.pmman.dao.mapper.PlayerHomeMapper;
 import tech.pmman.pojo.PlayerLocationEntry;
-import tech.pmman.pojo.db.PlayerHomeEntry;
+import tech.pmman.pojo.db.PlayerHome;
 import tech.pmman.util.MessageTool;
 import tech.pmman.util.PlayerTool;
 
@@ -26,12 +26,12 @@ public class HomeService {
         DbManager.getInstance()
                  .get()
                  .useExtension(PlayerHomeMapper.class, dao -> {
-                     List<PlayerHomeEntry> homes = dao.queryPlayerHomes(uuid);
-                     PlayerHomeEntry targetHome = homes.stream()
-                                                       .filter(h -> h.getHomeName()
-                                                                     .equals(homeName))
-                                                       .findFirst()
-                                                       .orElse(null);
+                     List<PlayerHome> homes = dao.queryPlayerHomes(uuid);
+                     PlayerHome targetHome = homes.stream()
+                                                  .filter(h -> h.getHomeName()
+                                                                .equals(homeName))
+                                                  .findFirst()
+                                                  .orElse(null);
                      if (targetHome == null) {
                          MessageTool.sendPluginMessage(commandContext, Message.translation("simpleEssCommand.home.nohome")
                                                                               .param("homeName", homeName));
@@ -48,10 +48,10 @@ public class HomeService {
                                                                            .getPosition(), targetHome.getLocationObj()
                                                                                                      .getRotation());
                      PlayerTool.recordPlayerTransformHistory(playerRef.getUuid()
-                                                                      .toString(), new PlayerLocationEntry(targetHome.getWorldUUID(),
+                                                                      .toString(), targetHome.getWorldUUID(),
                              targetHome.getLocationObj()
                                        .getPosition(), targetHome.getLocationObj()
-                                                                 .getRotation()));
+                                                                 .getRotation());
                      MessageTool.sendPluginMessage(commandContext, Message.translation("simpleEssCommand.home.execute"));
                  });
     }

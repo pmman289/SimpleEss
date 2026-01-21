@@ -94,11 +94,11 @@ public class TpaService {
                 targetTransform
                         .getRotation());
         PlayerTool.recordPlayerTransformHistory(from.toString(),
-                new PlayerLocationEntry(fromPlayerRef.getWorldUuid()
-                                                     .toString(), fromTransform
+                fromPlayerRef.getWorldUuid()
+                             .toString(), fromTransform
                         .getPosition(),
-                        fromTransform
-                                .getRotation()));
+                fromTransform
+                        .getRotation());
         // 发送通知
         MessageTool.sendPluginMessage(fromPlayerRef, Message.translation("tpaRequestManager.requestAcceptedToFrom"));
         MessageTool.sendPluginMessage(targetPlayerRef, Message.translation("tpaRequestManager.requestAcceptedToTarget"));

@@ -10,7 +10,7 @@ import tech.pmman.ConfigManager;
 import tech.pmman.DbManager;
 import tech.pmman.dao.mapper.PlayerHomeMapper;
 import tech.pmman.pojo.Location;
-import tech.pmman.pojo.db.PlayerHomeEntry;
+import tech.pmman.pojo.db.PlayerHome;
 import tech.pmman.util.MessageTool;
 
 import javax.annotation.Nonnull;
@@ -31,13 +31,13 @@ public class SetHomeService {
         DbManager.getInstance()
                  .get()
                  .useExtension(PlayerHomeMapper.class, dao -> {
-                     List<PlayerHomeEntry> homeList = dao.queryPlayerHomes(uuid);
+                     List<PlayerHome> homeList = dao.queryPlayerHomes(uuid);
                      // 如果已有同名home，则覆盖
-                     PlayerHomeEntry existHome = homeList.stream()
-                                                         .filter(h -> h.getHomeName()
+                     PlayerHome existHome = homeList.stream()
+                                                    .filter(h -> h.getHomeName()
                                                                        .equals(homeName))
-                                                         .findFirst()
-                                                         .orElse(null);
+                                                    .findFirst()
+                                                    .orElse(null);
                      if (existHome != null) {
                          existHome.setWorldUUID(worldUUID);
                          existHome.setLocation(location);
@@ -54,7 +54,7 @@ public class SetHomeService {
                                                                                                                            .getMaxHome()));
                          return;
                      }
-                     PlayerHomeEntry insertDo = new PlayerHomeEntry();
+                     PlayerHome insertDo = new PlayerHome();
                      insertDo.setUuid(uuid);
                      insertDo.setHomeName(homeName);
                      insertDo.setWorldUUID(worldUUID);
