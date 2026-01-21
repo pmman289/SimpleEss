@@ -14,9 +14,16 @@ import javax.annotation.Nonnull;
 public class SimpleEssPlugin extends JavaPlugin {
     public static final String VERSION = "v0.0.3-beta";
 
+    private static SimpleEssPlugin INSTANCE;
+
     public SimpleEssPlugin(@Nonnull JavaPluginInit init) {
         super(init);
         ConfigManager.initConfig(this);
+        INSTANCE = this;
+    }
+
+    public static SimpleEssPlugin getInstance() {
+        return INSTANCE;
     }
 
     public <T> Config<T> registerConfig(String name, BuilderCodec<T> configCodec) {
@@ -25,8 +32,9 @@ public class SimpleEssPlugin extends JavaPlugin {
 
     @Override
     protected void setup() {
-        ConfigManager.load();
-        ConfigManager.save();
+        // 加载数据库
+        DbManager.getInstance().init();
+        ConfigManager.setup();
         TpaManager.loadConfig();
         MessageTool.loadConfig();
         // 注册命令
@@ -38,6 +46,6 @@ public class SimpleEssPlugin extends JavaPlugin {
 
     @Override
     protected void shutdown() {
-        ConfigManager.save();
+        ConfigManager.saveAll();
     }
 }
