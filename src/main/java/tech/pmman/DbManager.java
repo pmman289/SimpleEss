@@ -38,6 +38,11 @@ public class DbManager implements DatabaseProvider {
         if (JDBI != null) {
             throw new IllegalStateException("DbManager already initialized");
         }
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         Path dbPath = SimpleEssPlugin.getInstance()
                                      .getDataDirectory()
                                      .resolve("data.db");
