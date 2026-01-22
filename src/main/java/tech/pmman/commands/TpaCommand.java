@@ -9,7 +9,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import lombok.Getter;
-import tech.pmman.gui.TpaTargetSelectorGui;
+import tech.pmman.gui.tpa.TpaTargetSelectorGui;
 
 import javax.annotation.Nonnull;
 

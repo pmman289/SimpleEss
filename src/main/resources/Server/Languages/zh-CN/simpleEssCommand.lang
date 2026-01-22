@@ -47,3 +47,5 @@ fly.execute = 已将{player}的飞行模式设置为{mode}
 fly.others.desc = 启用指定玩家的飞行模式
 fly.others.arg = 要启用飞行模式的玩家
 fly.others.argMode = true=开 false=关
+
+kit.desc = 打开礼包领取器

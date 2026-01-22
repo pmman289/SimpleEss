@@ -1,0 +1,5 @@
+title = 礼包领取器
+cancelBtn = 取消
+cooldownText = {time}秒后可用
+onlyOnce = 一次性领取
+cooldownNote = 领取间隔:{time}秒

@@ -1,10 +1,16 @@
 package tech.pmman.dao.mapper;
 
+import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
+import org.jdbi.v3.sqlobject.customizer.BindList;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import tech.pmman.core.db.TableMapper;
+import tech.pmman.pojo.db.PersistenceRecord;
 
+import java.util.List;
+
+@RegisterBeanMapper(PersistenceRecord.class)
 public interface PersistenceRecordMapper extends TableMapper {
     @Override
     default String getCreateTableSql() {
@@ -49,4 +55,10 @@ public interface PersistenceRecordMapper extends TableMapper {
             WHERE uuid = :uuid AND key = :key
             """)
     Long queryLastTimestamp(@Bind("uuid") String uuid, @Bind("key") String key);
+
+    @SqlQuery("""
+            SELECT uuid, key, last_timestamp FROM persistence_record
+            WHERE uuid = :uuid AND key IN (<keys>)
+            """)
+    List<PersistenceRecord> queryUserRecords(@Bind("uuid") String uuid, @BindList("keys") List<String> keys);
 }

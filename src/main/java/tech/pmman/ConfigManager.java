@@ -1,10 +1,11 @@
 package tech.pmman;
 
 import com.hypixel.hytale.server.core.util.Config;
+import tech.pmman.config.KitConfig;
 import tech.pmman.config.PluginConfig;
-import tech.pmman.config.data.PlayerHomeConfig;
-import tech.pmman.config.data.PlayerLastTeleportConfig;
-import tech.pmman.config.data.PlayerTpaSettingsConfig;
+import tech.pmman.deprecated.data.PlayerHomeConfig;
+import tech.pmman.deprecated.data.PlayerLastTeleportConfig;
+import tech.pmman.deprecated.data.PlayerTpaSettingsConfig;
 import tech.pmman.dao.mapper.PlayerHomeMapper;
 import tech.pmman.dao.mapper.PlayerSettingsMapper;
 import tech.pmman.dao.mapper.PlayerTeleportHistoryMapper;
@@ -25,6 +26,7 @@ import java.util.logging.Level;
 
 public class ConfigManager {
     public static Config<PluginConfig> PLUGIN_CONFIG;
+    public static Config<KitConfig> KIT_CONFIG;
 
     private static Config<PlayerHomeConfig> PLAYER_HOME_DATA;
     private static Config<PlayerLastTeleportConfig> PLAYER_LAST_TELEPORT_DATA;
@@ -34,8 +36,12 @@ public class ConfigManager {
 
     public static void initConfig(SimpleEssPlugin plugin) {
         PLUGIN_CONFIG = plugin.registerConfig("pluginConfig", PluginConfig.CODEC);
+        KIT_CONFIG = plugin.registerConfig("kitConfig", KitConfig.CODEC);
 
-        ACTIVE_CONFIG = new Config[]{PLUGIN_CONFIG};
+        ACTIVE_CONFIG = new Config[]{
+                PLUGIN_CONFIG,
+                KIT_CONFIG
+        };
         migrateOldConfigData(plugin);
     }
 

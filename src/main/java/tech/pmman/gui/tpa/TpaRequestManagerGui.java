@@ -1,4 +1,4 @@
-package tech.pmman.gui;
+package tech.pmman.gui.tpa;
 
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;

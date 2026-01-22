@@ -1,0 +1,50 @@
+$C = "../../Common.ui";
+
+@PlayerSelectorButtonStyle = ButtonStyle(
+  Default:  (Background: #202d3c),
+  // 关键部分：定义禁用时的外观（通常调低透明度或使用灰色）
+  Disabled: (Background: #444444(0.5)),
+  Sounds: $C.@ButtonSounds
+);
+
+Button #KitSelectorButton {
+  // 基础布局属性
+  Anchor: (Horizontal: 4, Height: 55, Bottom: 8);
+  Background: $C.@InputBoxBackground;
+  LayoutMode: Top;
+  Padding: (Top: 8, Bottom: 8);
+
+  // 绑定基础按钮音效
+  Style: @PlayerSelectorButtonStyle;
+
+  // 礼包名称
+  Label #KitName {
+    Style: (
+      FontSize: 16,
+      TextColor: #93844c,
+      RenderBold: true,
+      HorizontalAlignment: Center
+    );
+    Text: "Loading..."; // 默认文本
+  }
+
+  // 礼包说明
+  Label #KitDesc {
+    Style: (
+      FontSize: 11,
+      TextColor: #96a9be,
+      HorizontalAlignment: Center
+    );
+    Text: "Loading...";
+  }
+
+  // 礼包状态，用于指示该礼包是否可领取/冷却时间
+  Label #Status {
+    Style: (
+      FontSize: 11,
+      TextColor: #96a9be,
+      HorizontalAlignment: Center
+    );
+    Text: "";
+  }
+}

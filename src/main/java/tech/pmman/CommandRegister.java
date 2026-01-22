@@ -18,6 +18,7 @@ public class CommandRegister {
     private final static MsgCommand MSG_COMMAND = new MsgCommand();
     private final static RtpCommand RTP_COMMAND = new RtpCommand();
     private final static FlyCommand FLY_COMMAND = new FlyCommand();
+    private final static KitCommand KIT_COMMAND = new KitCommand();
 
     private final static AbstractCommand[] ACTIVE_COMMAND = new AbstractCommand[]{
             SIMPLE_ESS_COMMAND,
@@ -30,7 +31,8 @@ public class CommandRegister {
             TPA_TAB_COMMAND,
             MSG_COMMAND,
             RTP_COMMAND,
-            FLY_COMMAND
+            FLY_COMMAND,
+            KIT_COMMAND
     };
 
     // 如果配置文件没有打开限制开放的命令设置，则使用这里的默认开放
@@ -42,7 +44,8 @@ public class CommandRegister {
             TPA_COMMAND,
             TPA_TAB_COMMAND,
             MSG_COMMAND,
-            RTP_COMMAND
+            RTP_COMMAND,
+            KIT_COMMAND
     };
 
     public static void register(CommandRegistry commandRegistry) {

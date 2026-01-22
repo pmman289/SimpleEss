@@ -1,4 +1,4 @@
-package tech.pmman.config.data;
+package tech.pmman.deprecated.data;
 
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
