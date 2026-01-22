@@ -8,11 +8,12 @@ import tech.pmman.events.EventListener;
 import tech.pmman.events.MemClearListener;
 import tech.pmman.service.TpaService;
 import tech.pmman.util.MessageTool;
+import tech.pmman.util.VersionUtil;
 
 import javax.annotation.Nonnull;
 
 public class SimpleEssPlugin extends JavaPlugin {
-    public static final String VERSION = "v0.0.4-beta";
+    public static final String VERSION = VersionUtil.getVersion();
 
     private static SimpleEssPlugin INSTANCE;
 
