@@ -45,6 +45,7 @@ public class BackToDeathCommand extends AbstractPlayerCommand implements Permiss
                                                                            .getUuid()
                                                                            .toString(), lastDeath.getPosition(),
                 lastDeath.getRotation());
+        MessageTool.sendPluginMessage(commandContext, Message.translation("simpleEssCommand.backdeath.execute"));
     }
 
     @Override

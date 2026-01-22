@@ -37,7 +37,7 @@ public class BackCommand extends AbstractPlayerCommand implements PermissionGrou
                  .useExtension(PlayerTeleportHistoryMapper.class, dao -> {
                      PlayerTeleportHistory lastTeleportHistory = dao.queryLastTeleportHistory(uuid);
                      if (lastTeleportHistory == null) {
-                         MessageTool.sendPluginMessage(commandContext, Message.translation("simpleEssCommand.back.execute"));
+                         MessageTool.sendPluginMessage(commandContext, Message.translation("simpleEssCommand.back.nolastpos"));
                          return;
                      }
                      // 判断世界是否在线
@@ -50,6 +50,7 @@ public class BackCommand extends AbstractPlayerCommand implements PermissionGrou
                      PlayerTool.teleportPlayer(ref, world, lastTeleportHistory.getLocationObj()
                                                                               .getPosition(), lastTeleportHistory.getLocationObj()
                                                                                                                  .getRotation());
+                     MessageTool.sendPluginMessage(commandContext, Message.translation("simpleEssCommand.back.execute"));
                  });
     }
 
