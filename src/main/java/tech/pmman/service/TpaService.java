@@ -5,8 +5,8 @@ import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import tech.pmman.ConfigManager;
-import tech.pmman.pojo.PlayerLocationEntry;
 import tech.pmman.pojo.TpaRequestData;
+import tech.pmman.pojo.db.PlayerTpaSettings;
 import tech.pmman.util.CheckTool;
 import tech.pmman.util.MessageTool;
 import tech.pmman.util.PlayerTool;
@@ -35,9 +35,10 @@ public class TpaService {
     }
 
     public static void sendTpaRequestWithClear(UUID from, UUID target) {
+        // 获取目标玩家设置
+        PlayerTpaSettings targetSettings = PlayerTpaSettingsService.getSettings(target.toString());
         // 如果玩家关闭了传送功能，则不发送请求
-        if (ConfigManager.PLAYER_TPA_SETTINGS_DATA.get()
-                                                  .getDisableTpa(target)) return;
+        if (targetSettings.isDisableTpa()) return;
         PlayerRef fromPlayerRef = Universe.get()
                                           .getPlayer(from);
         PlayerRef targetPlayerRef = Universe.get()
@@ -61,11 +62,9 @@ public class TpaService {
         userRequestList.add(req);
         MessageTool.sendPluginMessage(targetPlayerRef, Message.translation("tpaRequestManager.requestReceived"));
         // 如果玩家开启自动接受申请，则自动调用接受
-        if (ConfigManager.PLAYER_TPA_SETTINGS_DATA.get()
-                                                  .getAutoAccept(target)) {
+        if (targetSettings.isEnableAutoAccept()) {
             acceptTpaRequest(from, target);
-        } else if (ConfigManager.PLAYER_TPA_SETTINGS_DATA.get()
-                                                         .getAutoDeny(target)) {
+        } else if (targetSettings.isEnableAutoDeny()) {
             // 如果开启了自动拒绝，则自动调用拒绝
             denyTpaRequest(from, target);
         }

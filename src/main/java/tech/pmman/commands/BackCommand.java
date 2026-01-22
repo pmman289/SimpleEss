@@ -10,16 +10,13 @@ import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import lombok.Getter;
-import tech.pmman.ConfigManager;
 import tech.pmman.DbManager;
 import tech.pmman.dao.mapper.PlayerTeleportHistoryMapper;
-import tech.pmman.pojo.PlayerLocationEntry;
 import tech.pmman.pojo.db.PlayerTeleportHistory;
 import tech.pmman.util.MessageTool;
 import tech.pmman.util.PlayerTool;
 
 import javax.annotation.Nonnull;
-import java.util.Map;
 import java.util.UUID;
 
 public class BackCommand extends AbstractPlayerCommand implements PermissionGroupSettable {

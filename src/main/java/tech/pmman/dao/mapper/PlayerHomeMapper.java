@@ -3,6 +3,7 @@ package tech.pmman.dao.mapper;
 import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
+import org.jdbi.v3.sqlobject.statement.SqlBatch;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import tech.pmman.core.db.TableMapper;
@@ -21,7 +22,6 @@ public interface PlayerHomeMapper extends TableMapper {
                   "home_name" TEXT NOT NULL,
                   "world_uuid" TEXT NOT NULL,
                   "location" TEXT NOT NULL,
-                  PRIMARY KEY ("id"),
                   UNIQUE ("uuid" ASC, "home_name" ASC)
                 );
                 """;
@@ -32,6 +32,12 @@ public interface PlayerHomeMapper extends TableMapper {
             VALUES (:uuid, :homeName, :worldUUID, :location)
             """)
     int insert(@BindBean PlayerHome playerHome);
+
+    @SqlBatch("""
+            INSERT INTO player_home (uuid, home_name, world_uuid, location)
+            VALUES (:uuid, :homeName, :worldUUID, :location)
+            """)
+    void insertBatch(@BindBean List<PlayerHome> playerHomeList);
 
     @SqlUpdate("""
             UPDATE player_home

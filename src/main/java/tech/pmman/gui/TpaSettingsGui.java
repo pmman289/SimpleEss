@@ -14,32 +14,23 @@ import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import lombok.Data;
-import tech.pmman.ConfigManager;
-import tech.pmman.pojo.PlayerTpaSettingsConfigEntry;
+import tech.pmman.pojo.db.PlayerTpaSettings;
+import tech.pmman.service.PlayerTpaSettingsService;
 import tech.pmman.util.PlayerTool;
 
 import javax.annotation.Nonnull;
-import java.util.Map;
 
 public class TpaSettingsGui extends InteractiveCustomUIPage<TpaSettingsGui.TpaSettingsGuiData> {
-    private final PlayerTpaSettingsConfigEntry settings;
+    private PlayerTpaSettings settings;
 
     public TpaSettingsGui(@Nonnull PlayerRef playerRef) {
         super(playerRef, CustomPageLifetime.CanDismiss, TpaSettingsGuiData.CODEC);
-        // 为玩家创建配置文件
-        Map<String, PlayerTpaSettingsConfigEntry> playerSettings = ConfigManager.PLAYER_TPA_SETTINGS_DATA.get()
-                                                                                                         .getPlayerSettings();
-        if (playerSettings.get(playerRef.getUuid()
-                                        .toString()) == null) {
-            playerSettings.put(playerRef.getUuid()
-                                        .toString(), new PlayerTpaSettingsConfigEntry());
-        }
-        settings = playerSettings.get(playerRef.getUuid()
-                                               .toString());
     }
 
     @Override
     public void build(@Nonnull Ref<EntityStore> ref, @Nonnull UICommandBuilder uiCommandBuilder, @Nonnull UIEventBuilder uiEventBuilder, @Nonnull Store<EntityStore> store) {
+        settings = PlayerTpaSettingsService.getSettings(playerRef.getUuid()
+                                                                                   .toString());
         uiCommandBuilder.append("Pages/Tpa/Tpa_Settings.ui");
         uiCommandBuilder.set("#EnableAutoDeny #CheckBox.Value", settings.isEnableAutoDeny());
         uiCommandBuilder.set("#EnableAutoAccept #CheckBox.Value", settings.isEnableAutoAccept());
@@ -75,6 +66,9 @@ public class TpaSettingsGui extends InteractiveCustomUIPage<TpaSettingsGui.TpaSe
             PlayerTool.getPlayerFromRef(ref)
                       .getPageManager()
                       .openCustomPage(ref, store, new TpaRequestManagerGui(playerRef));
+            // 写入数据库
+            PlayerTpaSettingsService.setSettings(playerRef.getUuid()
+                                                          .toString(), settings);
         }
         // 解决冲突选项
         if (data.getEnableAutoAccept() != null) {

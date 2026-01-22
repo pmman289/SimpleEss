@@ -3,22 +3,15 @@ package tech.pmman.config.data;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.codec.codecs.map.MapCodec;
-import tech.pmman.pojo.PlayerLocationEntry;
+import lombok.Getter;
+import tech.pmman.deprecated.PlayerLocationEntry;
 
 import java.util.*;
 
 public class PlayerHomeConfig {
     public static final BuilderCodec<PlayerHomeConfig> CODEC;
+    @Getter
     private final Map<String, Map<String, PlayerLocationEntry>> homeData = new HashMap<>();
-
-    public Map<String, PlayerLocationEntry> getHomeMap(String uuidStr) {
-        return homeData.computeIfAbsent(uuidStr, e -> new HashMap<>());
-    }
-
-    public void putHome(String uuidStr, String homeName, PlayerLocationEntry location) {
-        Map<String, PlayerLocationEntry> homeMap = homeData.computeIfAbsent(uuidStr, e -> new HashMap<>());
-        homeMap.put(homeName, location);
-    }
 
     static {
         BuilderCodec.Builder<PlayerHomeConfig> builder =

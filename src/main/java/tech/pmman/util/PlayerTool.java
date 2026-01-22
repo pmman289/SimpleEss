@@ -13,11 +13,9 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import tech.pmman.ConfigManager;
 import tech.pmman.DbManager;
 import tech.pmman.dao.mapper.PlayerTeleportHistoryMapper;
 import tech.pmman.pojo.Location;
-import tech.pmman.pojo.PlayerLocationEntry;
 import tech.pmman.pojo.db.PlayerTeleportHistory;
 
 import javax.annotation.Nonnull;

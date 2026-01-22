@@ -4,7 +4,7 @@ import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.codec.codecs.map.MapCodec;
 import lombok.Data;
-import tech.pmman.pojo.PlayerLocationEntry;
+import tech.pmman.deprecated.PlayerLocationEntry;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package tech.pmman.pojo;
+package tech.pmman.deprecated;
 
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;

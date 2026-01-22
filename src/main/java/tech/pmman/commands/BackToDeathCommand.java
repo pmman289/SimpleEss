@@ -12,7 +12,6 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import lombok.Getter;
-import tech.pmman.pojo.PlayerLocationEntry;
 import tech.pmman.util.MessageTool;
 import tech.pmman.util.PlayerTool;
 

@@ -17,7 +17,8 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import lombok.Data;
-import tech.pmman.ConfigManager;
+import tech.pmman.pojo.db.PlayerTpaSettings;
+import tech.pmman.service.PlayerTpaSettingsService;
 import tech.pmman.service.TpaService;
 import tech.pmman.util.PlayerTool;
 
@@ -49,6 +50,7 @@ public class TpaTargetSelectorGui extends InteractiveCustomUIPage<TpaTargetSelec
                                .equals(playerRef.getUuid()));
         for (int i = 0; i < players.size(); i++) {
             PlayerRef iRef = players.get(i);
+            UUID targetUUID = iRef.getUuid();
             assert iRef.getWorldUuid() != null;
             String worldName = Objects.requireNonNull(Universe.get()
                                                               .getWorld(iRef.getWorldUuid()))
@@ -59,7 +61,7 @@ public class TpaTargetSelectorGui extends InteractiveCustomUIPage<TpaTargetSelec
             uiCommandBuilder.set(path + " #WorldName.Text", Message.translation("tpaSelector.worldName")
                                                                    .param("worldName", worldName));
             // 如果不能请求，则将按钮置灰()
-            int requestCd = TpaService.getRequestCdWithRemoveExpiredRequest(PlayerTool.getUUID(store, ref), iRef.getUuid());
+            int requestCd = TpaService.getRequestCdWithRemoveExpiredRequest(PlayerTool.getUUID(store, ref), targetUUID);
             // 如果有bypass权限，则跳过
             if (requestCd > 0 &&
                     !permissionsModule.hasPermission(playerRef.getUuid(), "simpleess.command.tpa.cooldown.bypass")) {
@@ -67,15 +69,17 @@ public class TpaTargetSelectorGui extends InteractiveCustomUIPage<TpaTargetSelec
                 uiCommandBuilder.set(path + " #RequestCd.Text", Message.translation("tpaSelector.requestCd")
                                                                        .param("requestCd", requestCd));
             }
+            // 获取目标玩家tpa设置
+            PlayerTpaSettings targetSettings = PlayerTpaSettingsService.getSettings(targetUUID
+                                                                                       .toString());
             // 玩家关闭了tpa功能也要置灰
-            if (ConfigManager.PLAYER_TPA_SETTINGS_DATA.get()
-                                                      .getDisableTpa(iRef.getUuid())) {
+            if (targetSettings.isDisableTpa()) {
                 uiCommandBuilder.set(path + ".Disabled", true);
             }
             uiEventBuilder.addEventBinding(
                     CustomUIEventBindingType.Activating,
                     path,
-                    EventData.of("TargetUUID", iRef.getUuid()
+                    EventData.of("TargetUUID", targetUUID
                                                    .toString()),
                     false
             );

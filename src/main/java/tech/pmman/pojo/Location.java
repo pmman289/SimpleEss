@@ -19,7 +19,7 @@ public class Location {
     }
 
     /**
-     * 将json字符串转换为Location，约定合法的字符串为"p"
+     * 将json字符串转换为Location
      *
      * @param json json
      * @return 对象
