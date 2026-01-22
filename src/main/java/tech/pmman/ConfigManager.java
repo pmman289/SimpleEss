@@ -34,34 +34,30 @@ public class ConfigManager {
 
     public static void initConfig(SimpleEssPlugin plugin) {
         PLUGIN_CONFIG = plugin.registerConfig("pluginConfig", PluginConfig.CODEC);
-        PLAYER_HOME_DATA = plugin.registerConfig("data/homeData", PlayerHomeConfig.CODEC);
-        PLAYER_LAST_TELEPORT_DATA = plugin.registerConfig("data/playTeleportHistory", PlayerLastTeleportConfig.CODEC);
-        PLAYER_TPA_SETTINGS_DATA = plugin.registerConfig("data/playerTpaSettingsConfig", PlayerTpaSettingsConfig.CODEC);
 
-        ACTIVE_CONFIG = new Config[]{
-                PLUGIN_CONFIG
-        };
+        ACTIVE_CONFIG = new Config[]{PLUGIN_CONFIG};
+        migrateOldConfigData(plugin);
     }
 
     public static void setup() {
         loadAll();
         saveAll();
-        migrateOldConfigData();
     }
 
     /**
      * 从配置文件存储迁移到sqlite
      */
-    public static void migrateOldConfigData() {
-        Path oldDataPath = SimpleEssPlugin.getInstance()
-                                          .getDataDirectory()
-                                          .resolve("data");
+    public static void migrateOldConfigData(SimpleEssPlugin plugin) {
+        Path oldDataPath = plugin.getDataDirectory()
+                                 .resolve("data");
         // 如果data文件夹存在且没有成功迁移过再判断
         if (Files.exists(oldDataPath) && !Files.exists(oldDataPath.resolve("migration.lock"))) {
-            SimpleEssPlugin.getInstance()
-                           .getLogger()
-                           .at(Level.WARNING)
-                           .log("Legacy configuration detected. Starting migration. Please DO NOT shut down the server. Old data files will be moved once complete");
+            plugin.getLogger()
+                  .at(Level.WARNING)
+                  .log("Legacy configuration detected. Starting migration. Please DO NOT shut down the server. Old data files will be moved once complete");
+            PLAYER_HOME_DATA = plugin.registerConfig("data/homeData", PlayerHomeConfig.CODEC);
+            PLAYER_LAST_TELEPORT_DATA = plugin.registerConfig("data/playTeleportHistory", PlayerLastTeleportConfig.CODEC);
+            PLAYER_TPA_SETTINGS_DATA = plugin.registerConfig("data/playerTpaSettingsConfig", PlayerTpaSettingsConfig.CODEC);
             // 开启事务
             try {
                 DbManager.getInstance()
@@ -84,16 +80,14 @@ public class ConfigManager {
                              Files.createFile(oldDataPath.resolve("migration.lock"));
                          });
             } catch (Exception e) {
-                SimpleEssPlugin.getInstance()
-                               .getLogger()
-                               .at(Level.WARNING)
-                               .log("An error occurred during migration. Changes have been rolled back: " + e);
+                plugin.getLogger()
+                      .at(Level.WARNING)
+                      .log("An error occurred during migration. Changes have been rolled back: " + e);
                 return;
             }
-            SimpleEssPlugin.getInstance()
-                           .getLogger()
-                           .at(Level.WARNING)
-                           .log("Data migration completed successfully");
+            plugin.getLogger()
+                  .at(Level.WARNING)
+                  .log("Data migration completed successfully");
         }
     }
 
@@ -105,10 +99,9 @@ public class ConfigManager {
             for (Map.Entry<String, PlayerLocationEntry> homeData : userData.getValue()
                                                                            .entrySet()) {
                 PlayerHome newData = new PlayerHome(userData.getKey(), homeData.getKey(), homeData.getValue()
-                                                                                                  .getWorldUUID(),
-                        new Location(homeData.getValue()
-                                             .getPosition(), homeData.getValue()
-                                                                     .getRotation()));
+                                                                                                  .getWorldUUID(), new Location(homeData.getValue()
+                                                                                                                                        .getPosition(), homeData.getValue()
+                                                                                                                                                                .getRotation()));
                 insertList.add(newData);
             }
         }
@@ -121,12 +114,9 @@ public class ConfigManager {
         List<PlayerTeleportHistory> insertList = new ArrayList<>();
         for (Map.Entry<String, PlayerLocationEntry> tpData : oldData.entrySet()) {
             PlayerTeleportHistory insertDo = new PlayerTeleportHistory(tpData.getKey(), tpData.getValue()
-                                                                                              .getWorldUUID(), new Location(
-                    tpData.getValue()
-                          .getPosition(),
-                    tpData.getValue()
-                          .getRotation()
-            ));
+                                                                                              .getWorldUUID(), new Location(tpData.getValue()
+                                                                                                                                  .getPosition(), tpData.getValue()
+                                                                                                                                                        .getRotation()));
             insertList.add(insertDo);
         }
         mapper.insertBatch(insertList);
@@ -141,11 +131,9 @@ public class ConfigManager {
             insertDo.setUuid(settingsData.getKey());
             insertDo.setName(PlayerTpaSettings.NAME);
             insertDo.setSettings(new PlayerTpaSettings(settingsData.getValue()
-                                                                   .isEnableAutoAccept(),
-                    settingsData.getValue()
-                                .isEnableAutoDeny(),
-                    settingsData.getValue()
-                                .isDisableTpa()).toJson());
+                                                                   .isEnableAutoAccept(), settingsData.getValue()
+                                                                                                      .isEnableAutoDeny(), settingsData.getValue()
+                                                                                                                                       .isDisableTpa()).toJson());
             insertList.add(insertDo);
         }
         mapper.insertBatch(insertList);

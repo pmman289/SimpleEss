@@ -19,8 +19,10 @@ public class SimpleEssPlugin extends JavaPlugin {
 
     public SimpleEssPlugin(@Nonnull JavaPluginInit init) {
         super(init);
-        ConfigManager.initConfig(this);
         INSTANCE = this;
+        // 加载数据库
+        DbManager.getInstance().init();
+        ConfigManager.initConfig(this);
     }
 
     public static SimpleEssPlugin getInstance() {
@@ -33,8 +35,6 @@ public class SimpleEssPlugin extends JavaPlugin {
 
     @Override
     protected void setup() {
-        // 加载数据库
-        DbManager.getInstance().init();
         ConfigManager.setup();
         TpaService.loadConfig();
         MessageTool.loadConfig();
