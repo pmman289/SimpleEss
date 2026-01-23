@@ -20,6 +20,7 @@ import tech.pmman.ConfigManager;
 import tech.pmman.pojo.KitConfigEntry;
 import tech.pmman.pojo.KitItemEntry;
 import tech.pmman.service.CooldownService;
+import tech.pmman.util.MessageTool;
 import tech.pmman.util.PlayerTool;
 
 import javax.annotation.Nonnull;
@@ -150,6 +151,8 @@ public class KitSelectorGui extends InteractiveCustomUIPage<KitSelectorGui.KitSe
                       .getCombinedStorageFirst()
                       .addItemStack(itemStack);
             }
+            MessageTool.sendPluginMessage(playerRef, Message.translation("simpleEssCommand.kit.use")
+                                                            .param("name", kitData.getName()));
             close();
         }
     }

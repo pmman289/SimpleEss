@@ -1,0 +1,5 @@
+title = Kit Selector
+cancelBtn = Cancel
+cooldownText = Available in {time}s
+onlyOnce = One-time use
+cooldownNote = Cooldown: {time}s

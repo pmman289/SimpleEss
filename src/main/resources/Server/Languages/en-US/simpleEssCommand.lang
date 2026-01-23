@@ -1,24 +1,26 @@
 # Home System
-sethome.desc = Set your current location as a home
-sethome.execute = Your home has been set to your current location.
-sethome.desc.argName = Home name
-sethome.desc.argNameDefault = Default home name (default)
-sethome.outOfMaxHome = You have reached the maximum limit of {maxHome} homes.
-
 home.desc = Teleport to a set home
 home.desc.argName = Home name
 home.desc.argNameDefault = Default home name (default)
 home.execute = You have been teleported to your home.
 home.nohome = The specified home does not exist: {homeName}
 
+sethome.desc = Set your current location as a home
+sethome.execute = Your home has been set to your current location.
+sethome.desc.argName = Home name
+sethome.desc.argNameDefault = Default home name (default)
+sethome.outOfMaxHome = You have reached the maximum limit of {maxHome} homes.
+
 # Teleportation & Spawn
 setworldspawn.desc = Set the world spawn point to your current location
 setworldspawn.execute = The world spawn point has been set to x:{x} y:{y} z:{z}
 
 back.desc = Return to your previous teleport location
-back.execute = No previous teleport location found.
+back.execute = Teleported to your previous location.
+back.nolastpos = No previous teleport location found.
 
 backdeath.desc = Return to your last death location
+backdeath.execute = Teleported to your last death location in this world.
 backdeath.nodeath = You haven't died yet. Lucky you!
 
 tpa.desc = Send a teleport request to a specific player
@@ -33,7 +35,6 @@ msg.cannotSendSelf = You cannot send private messages to yourself.
 # Admin & System
 simpleess.desc = Main command for SimpleEss
 simpleess.execute = SimpleEss-{version}\nAvailable subcommands:\nreload
-
 simpleess.reload.desc = Reload SimpleEss configuration
 simpleess.reload.execute = Reloading configuration from file...
 simpleess.reload.executed = Configuration reloaded successfully.
@@ -50,3 +51,7 @@ fly.execute = Flight mode for {player} has been set to {mode}
 fly.others.desc = Enable or disable flight mode for a specific player
 fly.others.arg = The target player
 fly.others.argMode = true=ON false=OFF
+
+# Kits
+kit.desc = Open the Kit selector
+kit.use = The kit {name} has been added to your inventory.

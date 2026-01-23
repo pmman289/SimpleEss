@@ -49,3 +49,4 @@ fly.others.arg = 要启用飞行模式的玩家
 fly.others.argMode = true=开 false=关
 
 kit.desc = 打开礼包领取器
+kit.use = 已将礼包 {name} 发送到你的背包
