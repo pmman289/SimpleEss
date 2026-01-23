@@ -19,10 +19,10 @@ $C.@PageOverlay {
       Group {
         LayoutMode: Center;
         Anchor: (Top: 8);
-$C.@TextButton #AcceptButton {
-  @Anchor = (Width: 170, Right: 6);
-  Text: %tpaDialog.accept;
-}
+        $C.@TextButton #AcceptButton {
+          @Anchor = (Width: 170, Right: 6);
+          Text: %tpaDialog.accept;
+        }
         $C.@SecondaryTextButton #DenyButton {
           @Anchor = (Width: 170, Left: 6);
           Text: %tpaDialog.deny;
