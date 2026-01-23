@@ -28,14 +28,15 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class TpaTargetSelectorGui extends InteractiveCustomUIPage<TpaTargetSelectorGui.TpaTargetSelectorGuiData> {
+    private final PermissionsModule permissionsModule;
 
     public TpaTargetSelectorGui(@Nonnull PlayerRef playerRef) {
         super(playerRef, CustomPageLifetime.CanDismiss, TpaTargetSelectorGuiData.CODEC);
+        permissionsModule = PermissionsModule.get();
     }
 
     @Override
     public void build(@Nonnull Ref<EntityStore> ref, @Nonnull UICommandBuilder uiCommandBuilder, @Nonnull UIEventBuilder uiEventBuilder, @Nonnull Store<EntityStore> store) {
-        PermissionsModule permissionsModule = PermissionsModule.get();
         uiCommandBuilder.append("Pages/Tpa/Tpa_Target_Player_Selector.ui");
         uiEventBuilder.addEventBinding(
                 CustomUIEventBindingType.Activating,
@@ -46,43 +47,60 @@ public class TpaTargetSelectorGui extends InteractiveCustomUIPage<TpaTargetSelec
         // 填充玩家列表
         List<PlayerRef> players = Universe.get()
                                           .getPlayers();
-        players.removeIf(e -> e.getUuid()
-                               .equals(playerRef.getUuid()));
+        // 预处理数据
+        preDataFilter(players);
         for (int i = 0; i < players.size(); i++) {
             PlayerRef iRef = players.get(i);
-            UUID targetUUID = iRef.getUuid();
             assert iRef.getWorldUuid() != null;
-            String worldName = Objects.requireNonNull(Universe.get()
-                                                              .getWorld(iRef.getWorldUuid()))
-                                      .getName();
-            uiCommandBuilder.append("#PlayerCards", "Pages/Tpa/Tpa_Target_Player_Entry.ui");
+            UUID targetUUID = iRef.getUuid();
             String path = "#PlayerCards[" + i + "]";
-            uiCommandBuilder.set(path + " #Name.Text", iRef.getUsername());
-            uiCommandBuilder.set(path + " #WorldName.Text", Message.translation("tpaSelector.worldName")
-                                                                   .param("worldName", worldName));
-            // 如果不能请求，则将按钮置灰()
-            int requestCd = TpaService.getRequestCdWithRemoveExpiredRequest(PlayerTool.getUUID(store, ref), targetUUID);
-            // 如果有bypass权限，则跳过
-            if (requestCd > 0 &&
-                    !permissionsModule.hasPermission(playerRef.getUuid(), "simpleess.command.tpa.cooldown.bypass")) {
-                uiCommandBuilder.set(path + ".Disabled", true);
-                uiCommandBuilder.set(path + " #RequestCd.Text", Message.translation("tpaSelector.requestCd")
-                                                                       .param("requestCd", requestCd));
-            }
-            // 获取目标玩家tpa设置
-            PlayerTpaSettings targetSettings = PlayerTpaSettingsService.getSettings(targetUUID
-                                                                                       .toString());
-            // 玩家关闭了tpa功能也要置灰
-            if (targetSettings.isDisableTpa()) {
-                uiCommandBuilder.set(path + ".Disabled", true);
-            }
+            // 插入entry
+            insertEntryUi(uiCommandBuilder, iRef, path);
+            // 设置entry具体状态
+            setEntryState(uiCommandBuilder, store, ref, targetUUID, path);
             uiEventBuilder.addEventBinding(
                     CustomUIEventBindingType.Activating,
                     path,
                     EventData.of("TargetUUID", targetUUID
-                                                   .toString()),
+                            .toString()),
                     false
             );
+        }
+    }
+
+    private void preDataFilter(List<PlayerRef> players) {
+        players.removeIf(e -> e.getUuid()
+                               .equals(playerRef.getUuid()));
+    }
+
+    private void insertEntryUi(UICommandBuilder uiCommandBuilder, PlayerRef iRef, String path) {
+        assert iRef.getWorldUuid() != null;
+        String worldName = Objects.requireNonNull(Universe.get()
+                                                          .getWorld(iRef.getWorldUuid()))
+                                  .getName();
+        uiCommandBuilder.append("#PlayerCards", "Pages/Tpa/Tpa_Target_Player_Entry.ui");
+        uiCommandBuilder.set(path + " #Name.Text", iRef.getUsername());
+        uiCommandBuilder.set(path + " #WorldName.Text", Message.translation("tpaSelector.worldName")
+                                                               .param("worldName", worldName));
+    }
+
+    private void setEntryState(UICommandBuilder uiCommandBuilder, Store<EntityStore> store, Ref<EntityStore> ref,
+                               UUID targetUUID, String path) {
+        // 如果不能请求，则将按钮置灰()
+        int requestCd = TpaService.getRequestCdWithRemoveExpiredRequest(PlayerTool.getUUID(store, ref), targetUUID);
+        // 如果有bypass权限，则跳过
+        if (requestCd > 0 &&
+                !permissionsModule.hasPermission(playerRef.getUuid(), "simpleess.command.tpa.cooldown.bypass")) {
+            uiCommandBuilder.set(path + ".Disabled", true);
+            uiCommandBuilder.set(path + " #RequestCd.Text", Message.translation("tpaSelector.requestCd")
+                                                                   .param("requestCd", requestCd));
+        }
+        // 获取目标玩家tpa设置
+        PlayerTpaSettings targetSettings = PlayerTpaSettingsService.getSettings(targetUUID
+                .toString());
+        // 玩家关闭了tpa功能也要置灰
+        if (targetSettings.isDisableTpa()) {
+            uiCommandBuilder.set(path + ".Disabled", true);
         }
     }
 
