@@ -26,15 +26,16 @@ import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.UUID;
 
 public class KitSelectorGui extends InteractiveCustomUIPage<KitSelectorGui.KitSelectorGuiData> {
-
     public KitSelectorGui(@Nonnull PlayerRef playerRef) {
         super(playerRef, CustomPageLifetime.CanDismiss, KitSelectorGuiData.CODEC);
     }
 
     @Override
     public void build(@Nonnull Ref<EntityStore> ref, @Nonnull UICommandBuilder uiCommandBuilder, @Nonnull UIEventBuilder uiEventBuilder, @Nonnull Store<EntityStore> store) {
+        UUID uuid = playerRef.getUuid();
         uiCommandBuilder.append("Pages/Kit/Kit_Selector.ui");
         uiEventBuilder.addEventBinding(
                 CustomUIEventBindingType.Activating,
@@ -47,26 +48,30 @@ public class KitSelectorGui extends InteractiveCustomUIPage<KitSelectorGui.KitSe
         // 对数据进行筛选只能在这里做
         // 查询冷却时间
         Map<String, Integer> kitElapsedSeconds = CooldownService.getUserKitCooldownRecord(
-                playerRef.getUuid()
-                         .toString(), kitData.keySet()
-                                             .stream()
-                                             .toList());
+                uuid.toString(), kitData.keySet()
+                                        .stream()
+                                        .toList());
         // 构造冷却时间查找表
-        Iterator<Map.Entry<String, Integer>> timeEntryIterator = kitElapsedSeconds.entrySet()
-                                                                                  .iterator();
-        while (timeEntryIterator.hasNext()) {
-            Map.Entry<String, Integer> timeEntry = timeEntryIterator.next();
-            int kitCooldown = kitData.get(timeEntry.getKey())
-                                     .getCooldown();
+        Iterator<Map.Entry<String, KitConfigEntry>> kitDataIter = kitData.entrySet()
+                                                                         .iterator();
+        while (kitDataIter.hasNext()) {
+            Map.Entry<String, KitConfigEntry> kitDataEntry = kitDataIter.next();
+            String key = kitDataEntry.getKey();
+            KitConfigEntry value = kitDataEntry.getValue();
+            int kitCooldown = value
+                    .getCooldown();
             if (kitCooldown == -1) {
                 // 从data和查找表移除该项，因为已领取过
-                kitData.remove(timeEntry.getKey());
-                timeEntryIterator.remove();
-            } else if (timeEntry.getValue() > kitCooldown) {
+                kitDataIter.remove();
+                continue;
+            } else if (!kitElapsedSeconds.containsKey(key) || kitElapsedSeconds.get(key) > kitCooldown) {
                 // 如果经过的时间大于冷却时间
-                timeEntry.setValue(0);
+                kitElapsedSeconds.put(key, 0);
             } else {
-                timeEntry.setValue(kitCooldown - timeEntry.getValue());
+                kitElapsedSeconds.put(key, kitCooldown - kitElapsedSeconds.get(key));
+            }
+            if (!value.hasPermission(uuid, key)) {
+                kitDataIter.remove();
             }
         }
         Iterator<Map.Entry<String, KitConfigEntry>> kitDataIterator = kitData.entrySet()
@@ -129,6 +134,11 @@ public class KitSelectorGui extends InteractiveCustomUIPage<KitSelectorGui.KitSe
             int cooldown = CooldownService.tryUseKit(playerRef.getUuid()
                                                               .toString(), data.kitId, kitData.getCooldown());
             if (kitData.getCooldown() != 0 && cooldown != 0) {
+                close();
+                return;
+            }
+            // 检查权限
+            if (!kitData.hasPermission(playerRef.getUuid(), data.getKitId())) {
                 close();
                 return;
             }
