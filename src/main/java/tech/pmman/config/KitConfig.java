@@ -25,7 +25,7 @@ public class KitConfig {
         KitConfigEntry kitConfigEntry = new KitConfigEntry();
         kitConfigEntry.setName("Starter Pack");
         kitConfigEntry.setDesc("A gift for you");
-        kitConfigEntry.setCooldown(10);
+        kitConfigEntry.setCooldown(300);
         kitConfigEntry.setItems(new KitItemEntry[]{kitItem, kitItem2});
         kits.put("starter", kitConfigEntry);
     }

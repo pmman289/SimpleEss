@@ -41,6 +41,7 @@ rtp.desc = 在当前世界随机传送
 rtp.execute = 你已被随机传送到x:{x} y:{y} z:{z}
 rtp.failed = 多次尝试后仍然无法找到合适的传送目的地，如果多次出现，请报告管理员
 rtp.cooldown = 你还需要等待{cooldown}秒后才能再次随机传送
+rtp.notInWorldWhiteList = 你所在的世界不允许随机传送
 
 fly.desc = 启用你的飞行模式
 fly.execute = 已将{player}的飞行模式设置为{mode}

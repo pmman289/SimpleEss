@@ -23,6 +23,7 @@ import tech.pmman.util.MessageTool;
 import tech.pmman.util.PlayerTool;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
 
 public class RtpCommand extends AbstractPlayerCommand implements PermissionGroupSettable {
     @Getter
@@ -40,6 +41,17 @@ public class RtpCommand extends AbstractPlayerCommand implements PermissionGroup
 
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
+        // 检查当前世界是否在白名单中
+        boolean isInWorldWhiteList = Arrays
+                .stream(
+                        ConfigManager.PLUGIN_CONFIG.get()
+                                                   .getRtpAllowWorld())
+                .anyMatch(w -> w.equals(world.getName()));
+        if (!isInWorldWhiteList) {
+            MessageTool.sendPluginMessage(commandContext,
+                    Message.translation("simpleEssCommand.rtp.notInWorldWhiteList"));
+            return;
+        }
         PermissionsModule permissionsModule = PermissionsModule.get();
         // 获取剩余冷却时间
         int remainCooldown = CooldownService.tryUseCooldownService(playerRef.getUuid()

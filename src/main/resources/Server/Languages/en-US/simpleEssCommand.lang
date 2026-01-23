@@ -44,6 +44,7 @@ rtp.desc = Teleport to a random location in the current world
 rtp.execute = You have been randomly teleported to x:{x} y:{y} z:{z}
 rtp.failed = Failed to find a suitable location after multiple attempts. If this persists, please contact an administrator.
 rtp.cooldown = You must wait {cooldown} seconds before using random teleport again.
+rtp.notInWorldWhiteList = Random teleport is not enabled in this world.
 
 # Flight
 fly.desc = Enable or disable your flight mode
