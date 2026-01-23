@@ -77,6 +77,11 @@ public class PlayerTool {
                         .getComponent(playerRef, Player.getComponentType());
     }
 
+    public static PlayerRef getPlayerRef(Store<EntityStore> store, Ref<EntityStore> ref) {
+        if (store == null) store = ref.getStore();
+        return store.getComponent(ref, PlayerRef.getComponentType());
+    }
+
     public static String getPlayerDisplayName(@Nonnull Ref<EntityStore> playerRef) {
         Player player = playerRef.getStore()
                                  .getComponent(playerRef, Player.getComponentType());

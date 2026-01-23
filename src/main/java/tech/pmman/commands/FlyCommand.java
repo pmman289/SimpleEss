@@ -28,7 +28,7 @@ public class FlyCommand extends AbstractPlayerCommand implements PermissionGroup
 
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-        FlyService.fly(commandContext, store, ref, playerRef, null);
+        FlyService.fly(store, ref, null);
     }
 
     @Override
@@ -47,9 +47,8 @@ public class FlyCommand extends AbstractPlayerCommand implements PermissionGroup
 
         @Override
         protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-            FlyService.fly(commandContext, store, Objects.requireNonNull(targetPlayerArg.get(commandContext)
-                                                                                        .getReference()),
-                    targetPlayerArg.get(commandContext), null);
+            FlyService.fly(store, Objects.requireNonNull(targetPlayerArg.get(commandContext)
+                                                                        .getReference()), null);
         }
     }
 
@@ -66,9 +65,8 @@ public class FlyCommand extends AbstractPlayerCommand implements PermissionGroup
 
         @Override
         protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-            FlyService.fly(commandContext, store, Objects.requireNonNull(targetPlayerArg.get(commandContext)
-                                                                                        .getReference()),
-                    targetPlayerArg.get(commandContext), modeArg.get(commandContext));
+            FlyService.fly(store, Objects.requireNonNull(targetPlayerArg.get(commandContext)
+                                                                        .getReference()), modeArg.get(commandContext));
         }
     }
 }

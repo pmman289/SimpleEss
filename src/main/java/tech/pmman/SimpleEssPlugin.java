@@ -43,6 +43,8 @@ public class SimpleEssPlugin extends JavaPlugin {
         // 注册事件
         EventListener.register(getEventRegistry());
         MemClearListener.register(getEventRegistry());
+        // 注册ecs组件
+        EcsManager.setup(getEntityStoreRegistry());
     }
 
     @Override
