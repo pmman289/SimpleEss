@@ -50,6 +50,10 @@ public class ConfigManager {
         saveAll();
     }
 
+    public static void reload(){
+        loadAll();
+    }
+
     /**
      * 从配置文件存储迁移到sqlite
      */

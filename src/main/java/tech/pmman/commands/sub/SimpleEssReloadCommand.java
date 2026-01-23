@@ -24,7 +24,7 @@ public class SimpleEssReloadCommand extends CommandBase implements PermissionGro
         MessageTool.sendPluginMessage(
                 commandContext, Message.translation("simpleEssCommand.simpleess.reload.execute"));
         // 这里做重载配置文件操作
-        ConfigManager.PLUGIN_CONFIG.load();
+        ConfigManager.reload();
         MessageTool.sendPluginMessage(
                 commandContext, Message.translation("simpleEssCommand.simpleess.reload.executed")
         );
