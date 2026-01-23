@@ -52,7 +52,29 @@ public class KitSelectorGui extends InteractiveCustomUIPage<KitSelectorGui.KitSe
                 uuid.toString(), kitData.keySet()
                                         .stream()
                                         .toList());
-        // 构造冷却时间查找表
+        // 预处理数据
+        preDataFilter(kitData, kitElapsedSeconds);
+        Iterator<Map.Entry<String, KitConfigEntry>> kitDataIterator = kitData.entrySet()
+                                                                             .iterator();
+        for (int i = 0; i < kitData.size(); i++) {
+            Map.Entry<String, KitConfigEntry> data = kitDataIterator.next();
+            String kitId = data.getKey();
+            String entryPath = "#KitList[" + i + "]";
+            // 插入构造基础entry框架
+            insertEntryUi(uiCommandBuilder, data, i, entryPath);
+            // 根据条件处理entry状态
+            setEntryState(uiCommandBuilder, kitElapsedSeconds, data, entryPath);
+            // 绑定按钮事件数据
+            uiEventBuilder.addEventBinding(
+                    CustomUIEventBindingType.Activating,
+                    entryPath,
+                    EventData.of("KitId", kitId),
+                    false
+            );
+        }
+    }
+
+    private void preDataFilter(Map<String, KitConfigEntry> kitData, Map<String, Integer> kitElapsedSeconds) {
         Iterator<Map.Entry<String, KitConfigEntry>> kitDataIter = kitData.entrySet()
                                                                          .iterator();
         while (kitDataIter.hasNext()) {
@@ -71,50 +93,46 @@ public class KitSelectorGui extends InteractiveCustomUIPage<KitSelectorGui.KitSe
             } else {
                 kitElapsedSeconds.put(key, kitCooldown - kitElapsedSeconds.get(key));
             }
-            if (!value.hasPermission(uuid, key)) {
+            if (!value.hasPermission(playerRef.getUuid(), key)) {
                 kitDataIter.remove();
             }
         }
-        Iterator<Map.Entry<String, KitConfigEntry>> kitDataIterator = kitData.entrySet()
-                                                                             .iterator();
-        for (int i = 0; i < kitData.size(); i++) {
-            Map.Entry<String, KitConfigEntry> data = kitDataIterator.next();
-            String kitId = data.getKey();
-            String kitName = data.getValue()
-                                 .getName();
-            String kitDesc = data.getValue()
-                                 .getDesc();
-            int kitCooldown = data.getValue()
-                                  .getCooldown();
-            uiCommandBuilder.append("#KitList", "Pages/Kit/Kit_Entry.ui");
-            String entryPath = "#KitList[" + i + "]";
-            uiCommandBuilder.set(entryPath + " #KitName.Text", kitName);
-            uiCommandBuilder.set(entryPath + " #KitDesc.Text", kitDesc);
-            // 设置cd领取提示
-            if (kitCooldown == -1) {
+    }
+
+    private void insertEntryUi(@Nonnull UICommandBuilder uiCommandBuilder, Map.Entry<String, KitConfigEntry> data,
+                               int i, String entryPath) {
+        String kitName = data.getValue()
+                             .getName();
+        String kitDesc = data.getValue()
+                             .getDesc();
+        uiCommandBuilder.append("#KitList", "Pages/Kit/Kit_Entry.ui");
+        uiCommandBuilder.set(entryPath + " #KitName.Text", kitName);
+        uiCommandBuilder.set(entryPath + " #KitDesc.Text", kitDesc);
+    }
+
+    private void setEntryState(@Nonnull UICommandBuilder uiCommandBuilder, Map<String, Integer> kitElapsedSeconds,
+                               Map.Entry<String, KitConfigEntry> data, String entryPath) {
+        String kitId = data.getKey();
+        int kitCooldown = data.getValue()
+                              .getCooldown();
+        // 设置cd领取提示
+        if (kitCooldown == -1) {
+            uiCommandBuilder.set(entryPath + " #Status.Text",
+                    Message.translation("kitSelector.onlyOnce"));
+        } else {
+            uiCommandBuilder.set(entryPath + " #Status.Text",
+                    Message.translation("kitSelector.cooldownNote")
+                           .param("time", kitCooldown));
+        }
+        // 判断是否可用
+        Integer cooldown = kitElapsedSeconds.get(kitId);
+        if (cooldown != null) {
+            if (cooldown != 0) {
+                uiCommandBuilder.set(entryPath + ".Disabled", true);
                 uiCommandBuilder.set(entryPath + " #Status.Text",
-                        Message.translation("kitSelector.onlyOnce"));
-            } else {
-                uiCommandBuilder.set(entryPath + " #Status.Text",
-                        Message.translation("kitSelector.cooldownNote")
-                               .param("time", kitCooldown));
+                        Message.translation("kitSelector.cooldownText")
+                               .param("time", cooldown));
             }
-            // 判断是否可用
-            Integer cooldown = kitElapsedSeconds.get(kitId);
-            if (cooldown != null) {
-                if (cooldown != 0) {
-                    uiCommandBuilder.set(entryPath + ".Disabled", true);
-                    uiCommandBuilder.set(entryPath + " #Status.Text",
-                            Message.translation("kitSelector.cooldownText")
-                                   .param("time", cooldown));
-                }
-            }
-            uiEventBuilder.addEventBinding(
-                    CustomUIEventBindingType.Activating,
-                    entryPath,
-                    EventData.of("KitId", kitId),
-                    false
-            );
         }
     }
 
