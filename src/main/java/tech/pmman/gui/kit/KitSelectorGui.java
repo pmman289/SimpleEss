@@ -61,7 +61,7 @@ public class KitSelectorGui extends InteractiveCustomUIPage<KitSelectorGui.KitSe
             String kitId = data.getKey();
             String entryPath = "#KitList[" + i + "]";
             // 插入构造基础entry框架
-            insertEntryUi(uiCommandBuilder, data, i, entryPath);
+            insertEntryUi(uiCommandBuilder, data, entryPath);
             // 根据条件处理entry状态
             setEntryState(uiCommandBuilder, kitElapsedSeconds, data, entryPath);
             // 绑定按钮事件数据
@@ -100,7 +100,7 @@ public class KitSelectorGui extends InteractiveCustomUIPage<KitSelectorGui.KitSe
     }
 
     private void insertEntryUi(@Nonnull UICommandBuilder uiCommandBuilder, Map.Entry<String, KitConfigEntry> data,
-                               int i, String entryPath) {
+                               String entryPath) {
         String kitName = data.getValue()
                              .getName();
         String kitDesc = data.getValue()
