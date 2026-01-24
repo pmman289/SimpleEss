@@ -27,4 +27,8 @@ public class PlayerTpaSettings {
     public static PlayerTpaSettings fromJson(String json) {
         return JsonUtil.fromJson(PlayerTpaSettings.class, json);
     }
+
+    public static PlayerTpaSettings getDefault() {
+        return new PlayerTpaSettings(false, false, false);
+    }
 }

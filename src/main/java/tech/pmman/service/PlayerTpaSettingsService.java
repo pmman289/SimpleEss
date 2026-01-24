@@ -28,6 +28,9 @@ public class PlayerTpaSettingsService {
                                          .get()
                                          .withExtension(PlayerSettingsMapper.class,
                                                  dao -> dao.querySettings(uuid, PlayerTpaSettings.NAME));
+        if (playerSettings == null || playerSettings.isBlank()) {
+            return PlayerTpaSettings.getDefault();
+        }
         return PlayerTpaSettings.fromJson(playerSettings);
     }
 }
