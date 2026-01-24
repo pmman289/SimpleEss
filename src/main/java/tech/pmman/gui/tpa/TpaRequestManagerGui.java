@@ -21,6 +21,7 @@ import tech.pmman.util.PlayerTool;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,6 +41,8 @@ public class TpaRequestManagerGui extends InteractiveCustomUIPage<TpaRequestMana
         if (requests == null) {
             requests = Collections.emptyList();
         }
+        // 移除过期请求
+        requests.removeIf(request -> (System.currentTimeMillis() - request.getTimestamp()) / 1000 > 120);
 
         for (int i = 0; i < requests.size(); i++) {
             TpaRequestData req = requests.get(i);
@@ -50,6 +53,18 @@ public class TpaRequestManagerGui extends InteractiveCustomUIPage<TpaRequestMana
             uiCommandBuilder.set(path + " #RequesterName.Text", requesterName);
             uiCommandBuilder.set(path + " #RequestTime.Text", Message.translation("tpaRequestManager.requestTime")
                                                                      .param("requestTime", TpaService.getRequestCdWithRemoveExpiredRequest(req.getRequestPlayer(), myUuid)));
+
+            //根据请求类型设置文案
+            if (req.isTpa()){
+                uiCommandBuilder.set(path + " #TpaText.Text",
+                        Message.translation("tpaRequestManager.tpaText"));
+                uiCommandBuilder.set(path + " #TpaText.Style.TextColor", "#00FF00");
+            }else {
+                uiCommandBuilder.set(path + " #TpaText.Text",
+                        Message.translation("tpaRequestManager.tpahereText"));
+                uiCommandBuilder.set(path + " #TpaText.Style.TextColor", "#0000FF");
+            }
+
             // 2. 绑定批准事件
             uiEventBuilder.addEventBinding(
                     CustomUIEventBindingType.Activating,

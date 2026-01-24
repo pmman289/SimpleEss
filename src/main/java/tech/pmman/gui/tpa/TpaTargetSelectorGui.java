@@ -60,17 +60,26 @@ public class TpaTargetSelectorGui extends InteractiveCustomUIPage<TpaTargetSelec
             setEntryState(uiCommandBuilder, store, ref, targetUUID, path);
             uiEventBuilder.addEventBinding(
                     CustomUIEventBindingType.Activating,
-                    path,
-                    EventData.of("TargetUUID", targetUUID
-                            .toString()),
+                    path + " #TpaButton",
+                    new EventData()
+                            .append("Action", "TPA")
+                            .append("TargetUUID", targetUUID.toString()),
+                    false
+            );
+            uiEventBuilder.addEventBinding(
+                    CustomUIEventBindingType.Activating,
+                    path + " #TpahereButton",
+                    new EventData()
+                            .append("Action", "TPAHERE")
+                            .append("TargetUUID", targetUUID.toString()),
                     false
             );
         }
     }
 
     private void preDataFilter(List<PlayerRef> players) {
-        players.removeIf(e -> e.getUuid()
-                               .equals(playerRef.getUuid()));
+//        players.removeIf(e -> e.getUuid()
+//                               .equals(playerRef.getUuid()));
     }
 
     private void insertEntryUi(UICommandBuilder uiCommandBuilder, PlayerRef iRef, String path) {
@@ -91,8 +100,8 @@ public class TpaTargetSelectorGui extends InteractiveCustomUIPage<TpaTargetSelec
         // 如果有bypass权限，则跳过
         if (requestCd > 0 &&
                 !permissionsModule.hasPermission(playerRef.getUuid(), "simpleess.command.tpa.cooldown.bypass")) {
-            uiCommandBuilder.set(path + ".Disabled", true);
-            uiCommandBuilder.set(path + " #RequestCd.Text", Message.translation("tpaSelector.requestCd")
+            uiCommandBuilder.set(path + " #TpaButton.Disabled", true);
+            uiCommandBuilder.set(path + " #TpaButton.Text", Message.raw("tpaSelector.requestCd")
                                                                    .param("requestCd", requestCd));
         }
         // 获取目标玩家tpa设置
@@ -100,7 +109,7 @@ public class TpaTargetSelectorGui extends InteractiveCustomUIPage<TpaTargetSelec
                 .toString());
         // 玩家关闭了tpa功能也要置灰
         if (targetSettings.isDisableTpa()) {
-            uiCommandBuilder.set(path + ".Disabled", true);
+            uiCommandBuilder.set(path + " #TpaButton.Disabled", true);
         }
     }
 
@@ -110,9 +119,11 @@ public class TpaTargetSelectorGui extends InteractiveCustomUIPage<TpaTargetSelec
             close();
         }
         if (data.getTargetUUID() != null) {
-            // 发送传送请求
-            TpaService.sendTpaRequestWithClear(PlayerTool.getUUID(store, playerRef), data.getTargetUUID());
-            close();
+            if ("TPA".equals(data.getAction())) {
+                // 发送传送请求
+                TpaService.sendTpaRequestWithClear(PlayerTool.getUUID(store, playerRef), data.getTargetUUID());
+                close();
+            }
         }
     }
 

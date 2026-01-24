@@ -21,12 +21,14 @@ $C = "../../Common.ui";
 );
 
 Group {
+  Background: $C.@InputBoxBackground;
   LayoutMode: Left;
   Anchor: (Left: 8, Right: 8, Height: 48);
   Padding: (Left: 8, Right: 8, Top: 6);
 
   // 左侧：名称 + 请求时间
   Group {
+    FlexWeight: 2;
     LayoutMode: Top;
     Anchor: (Height: 36);
 
@@ -48,18 +50,29 @@ Group {
     }
   }
 
-  // 中间弹性占位
-  Label {
-    FlexWeight: 1;
+  Group {
+    LayoutMode: CenterMiddle;
+    Anchor: (Height: 24);
+    FlexWeight: 3;
+    Padding: (Right: 1);
+    Label #TpaText {
+      Text: "";
+      Style: (
+        FontSize: 11,
+        TextColor: #00FF00,
+        RenderBold: true
+      );
+    }
   }
 
   // 右侧按钮组
   Group {
-    LayoutMode: Left;
-    Anchor: (Height: 28);
+    LayoutMode: Right;
+    Anchor: (Height: 24);
+    FlexWeight: 3;
 
     $C.@TextButton #AcceptButton {
-      Anchor: (Height: 28);
+      Anchor: (Height: 28, MaxWidth: 50);
       Padding: (Left: 8, Right: 8, Top: 4, Bottom: 4);
       Text: %tpaRequestManager.accept;
       Style: @ActionButtonStyle;
@@ -68,7 +81,7 @@ Group {
     Group { Anchor: (Width: 8); }
 
     $C.@TextButton #DenyButton {
-      Anchor: (Height: 28);
+      Anchor: (Height: 28, MaxWidth: 50);
       Padding: (Left: 8, Right: 8, Top: 4, Bottom: 4);
       Text: %tpaRequestManager.deny;
       Style: @ActionButtonStyle;

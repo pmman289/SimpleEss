@@ -35,6 +35,14 @@ public class TpaService {
     }
 
     public static void sendTpaRequestWithClear(UUID from, UUID target) {
+        sendTpaRequestWithClear(from, target, true);
+    }
+
+    public static void sendTpahereRequestWithClear(UUID from, UUID target) {
+        sendTpaRequestWithClear(from, target, false);
+    }
+
+    private static void sendTpaRequestWithClear(UUID from, UUID target, boolean isTpa) {
         // 获取目标玩家设置
         PlayerTpaSettings targetSettings = PlayerTpaSettingsService.getSettings(target.toString());
         // 如果玩家关闭了传送功能，则不发送请求
@@ -58,7 +66,7 @@ public class TpaService {
             return;
         }
         // 否则发起申请
-        TpaRequestData req = new TpaRequestData(from);
+        TpaRequestData req = new TpaRequestData(from, isTpa);
         userRequestList.add(req);
         MessageTool.sendPluginMessage(targetPlayerRef, Message.translation("tpaRequestManager.requestReceived"));
         // 如果玩家开启自动接受申请，则自动调用接受
@@ -71,48 +79,95 @@ public class TpaService {
     }
 
     public static void acceptTpaRequest(UUID from, UUID target) {
-        PlayerRef fromPlayerRef = Universe.get()
-                                          .getPlayer(from);
-        PlayerRef targetPlayerRef = Universe.get()
-                                            .getPlayer(target);
-        CheckTool.checkPlayerRef(fromPlayerRef);
-        CheckTool.checkPlayerRef(targetPlayerRef);
-        // 移除数据
-        List<TpaRequestData> userRequestList = tpaDataMap.computeIfAbsent(target, _ -> new ArrayList<>());
-        userRequestList.removeIf(o -> from.equals(o.getRequestPlayer()));
+        acceptTpaRequest(from, target, true);
+    }
+
+    public static void acceptTpahereRequest(UUID from, UUID target) {
+        acceptTpaRequest(from, target, false);
+    }
+
+    private static void acceptTpaRequest(UUID from, UUID target, boolean isTpa) {
+        PlayerRef fromPlayerRef = null;
+        PlayerRef targetPlayerRef = null;
+        try {
+            fromPlayerRef = Universe.get()
+                                    .getPlayer(from);
+            targetPlayerRef = Universe.get()
+                                      .getPlayer(target);
+            CheckTool.checkPlayerRef(fromPlayerRef);
+            CheckTool.checkPlayerRef(targetPlayerRef);
+        }catch (Exception e){
+            return;
+        }finally {
+            // 移除数据
+            List<TpaRequestData> userRequestList = tpaDataMap.computeIfAbsent(target, _ -> new ArrayList<>());
+            userRequestList.removeIf(o -> from.equals(o.getRequestPlayer()));
+        }
         // 传送玩家
         assert fromPlayerRef.getWorldUuid() != null;
-        Transform targetTransform = targetPlayerRef.getTransform()
+        if (isTpa) {
+            Transform targetTransform = targetPlayerRef.getTransform()
+                                                       .clone();
+            Transform fromTransform = fromPlayerRef.getTransform()
                                                    .clone();
-        Transform fromTransform = fromPlayerRef.getTransform()
-                                               .clone();
-        PlayerTool.teleportPlayer(Objects.requireNonNull(fromPlayerRef.getReference()),
-                Universe.get()
-                        .getWorld(fromPlayerRef.getWorldUuid()), targetTransform
-                        .getPosition(),
-                targetTransform
-                        .getRotation());
-        PlayerTool.recordPlayerTransformHistory(from.toString(),
-                fromPlayerRef.getWorldUuid()
-                             .toString(), fromTransform
-                        .getPosition(),
-                fromTransform
-                        .getRotation());
-        // 发送通知
-        MessageTool.sendPluginMessage(fromPlayerRef, Message.translation("tpaRequestManager.requestAcceptedToFrom"));
-        MessageTool.sendPluginMessage(targetPlayerRef, Message.translation("tpaRequestManager.requestAcceptedToTarget"));
+            PlayerTool.teleportPlayer(Objects.requireNonNull(fromPlayerRef.getReference()),
+                    Universe.get()
+                            .getWorld(fromPlayerRef.getWorldUuid()), targetTransform
+                            .getPosition(),
+                    targetTransform
+                            .getRotation());
+            PlayerTool.recordPlayerTransformHistory(from.toString(),
+                    fromPlayerRef.getWorldUuid()
+                                 .toString(), fromTransform
+                            .getPosition(),
+                    fromTransform
+                            .getRotation());
+            // 发送通知
+            MessageTool.sendPluginMessage(fromPlayerRef, Message.translation("tpaRequestManager.requestAcceptedToFrom"));
+            MessageTool.sendPluginMessage(targetPlayerRef, Message.translation("tpaRequestManager.requestAcceptedToTarget"));
+        } else {
+            Transform fromTransform = fromPlayerRef.getTransform()
+                                                   .clone();
+            assert targetPlayerRef.getWorldUuid() != null;
+            PlayerTool.teleportPlayer(Objects.requireNonNull(targetPlayerRef.getReference()),
+                    Universe.get()
+                            .getWorld(targetPlayerRef.getWorldUuid()), fromTransform
+                            .getPosition(),
+                    fromTransform
+                            .getRotation());
+            PlayerTool.recordPlayerTransformHistory(from.toString(),
+                    targetPlayerRef.getWorldUuid()
+                                   .toString(), fromTransform
+                            .getPosition(),
+                    fromTransform
+                            .getRotation());
+            // 发送通知
+            MessageTool.sendPluginMessage(fromPlayerRef, Message.translation("tpaRequestManager.tpahereRequestAcceptedToFrom"));
+            MessageTool.sendPluginMessage(targetPlayerRef, Message.translation("tpaRequestManager.tpahereRequestAcceptedToTarget"));
+        }
+    }
+
+    public static void denyTpahereRequest(UUID from, UUID target){
+        denyTpaRequest(from, target);
     }
 
     public static void denyTpaRequest(UUID from, UUID target) {
-        PlayerRef fromPlayerRef = Universe.get()
-                                          .getPlayer(from);
-        PlayerRef targetPlayerRef = Universe.get()
-                                            .getPlayer(target);
-        CheckTool.checkPlayerRef(fromPlayerRef);
-        CheckTool.checkPlayerRef(targetPlayerRef);
-        // 移除数据
-        List<TpaRequestData> userRequestList = tpaDataMap.computeIfAbsent(target, _ -> new ArrayList<>());
-        userRequestList.removeIf(o -> from.equals(o.getRequestPlayer()));
+        PlayerRef fromPlayerRef;
+        PlayerRef targetPlayerRef;
+        try {
+            fromPlayerRef = Universe.get()
+                                    .getPlayer(from);
+            targetPlayerRef = Universe.get()
+                                      .getPlayer(target);
+            CheckTool.checkPlayerRef(fromPlayerRef);
+            CheckTool.checkPlayerRef(targetPlayerRef);
+        }catch (Exception e){
+            return;
+        }finally {
+            // 移除数据
+            List<TpaRequestData> userRequestList = tpaDataMap.computeIfAbsent(target, _ -> new ArrayList<>());
+            userRequestList.removeIf(o -> from.equals(o.getRequestPlayer()));
+        }
         // 发送通知
         MessageTool.sendPluginMessage(fromPlayerRef, Message.translation("tpaRequestManager.requestDeniedToFrom"));
     }

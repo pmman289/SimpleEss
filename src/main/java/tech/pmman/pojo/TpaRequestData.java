@@ -8,15 +8,17 @@ import java.util.UUID;
 public class TpaRequestData {
     private UUID requestPlayer;
     private Long timestamp;
+    private boolean isTpa = true;
 
     public TpaRequestData(UUID requestPlayer) {
         this.requestPlayer = requestPlayer;
         timestamp = System.currentTimeMillis();
     }
 
-    public TpaRequestData(UUID requestPlayer, Long timestamp) {
+    public TpaRequestData(UUID requestPlayer, boolean isTpa) {
         this.requestPlayer = requestPlayer;
-        this.timestamp = timestamp;
+        this.isTpa = isTpa;
+        timestamp = System.currentTimeMillis();
     }
 
     public TpaRequestData() {
