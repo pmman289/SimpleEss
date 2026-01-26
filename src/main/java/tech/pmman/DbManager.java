@@ -9,6 +9,8 @@ import tech.pmman.dao.mapper.PlayerHomeMapper;
 import tech.pmman.dao.mapper.PlayerSettingsMapper;
 import tech.pmman.dao.mapper.PlayerTeleportHistoryMapper;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -40,7 +42,9 @@ public class DbManager implements DatabaseProvider {
         }
         try {
             Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException e) {
+            Files.createDirectories(SimpleEssPlugin.getInstance()
+                                                   .getDataDirectory());
+        } catch (ClassNotFoundException | IOException e) {
             throw new RuntimeException(e);
         }
         Path dbPath = SimpleEssPlugin.getInstance()
